@@ -1,0 +1,6483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>NETA // NEUZA</title>
+
+<style>
+
+/* =========================================================
+   NETA CORE // SYSTEM DESIGN
+========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#000308;
+    --panel:#030914;
+    --panel2:#071221;
+
+    --cyan:#00f7ff;
+    --cyan2:#00a8ff;
+
+    --green:#00ff88;
+    --green2:#00c96b;
+
+    --red:#ff3155;
+    --pink:#ff3cac;
+
+    --yellow:#ffe066;
+    --orange:#ff9f43;
+
+    --white:#e9fbff;
+    --muted:#63849a;
+
+    --matrix:#00ff66;
+
+    --glow:
+        0 0 10px rgba(0,247,255,.8),
+        0 0 30px rgba(0,247,255,.2);
+}
+
+html,
+body{
+    margin:0;
+    width:100%;
+    min-height:100%;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            #06111d 0%,
+            #000308 55%,
+            #000000 100%
+        );
+
+    color:var(--white);
+
+    font-family:
+        Consolas,
+        Monaco,
+        "Courier New",
+        monospace;
+
+    overflow-x:hidden;
+}
+
+body{
+    min-height:100vh;
+}
+
+/* =========================================================
+   MATRIX
+========================================================= */
+
+#matrix{
+    position:fixed;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:0;
+
+    opacity:.14;
+
+    pointer-events:none;
+}
+
+.matrix-overlay{
+    position:fixed;
+    inset:0;
+
+    z-index:1;
+
+    pointer-events:none;
+
+    background:
+
+        linear-gradient(
+            rgba(0,0,0,.62),
+            rgba(0,0,0,.62)
+        ),
+
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 3px,
+            rgba(0,255,120,.025) 4px
+        );
+}
+
+/* =========================================================
+   SYSTEM BAR
+========================================================= */
+
+.system-bar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:36px;
+
+    z-index:100;
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 14px;
+
+    background:
+        rgba(0,4,9,.94);
+
+    border-bottom:
+        1px solid
+        rgba(0,247,255,.18);
+
+    font-size:.58rem;
+
+    letter-spacing:1.5px;
+
+    color:var(--muted);
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+        0 0 30px
+        rgba(0,0,0,.4);
+}
+
+.system-left,
+.system-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.online{
+    color:var(--green);
+}
+
+.dot{
+
+    display:inline-block;
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+    box-shadow:
+        0 0 6px var(--green),
+        0 0 14px var(--green);
+
+    animation:pulse 1.4s infinite;
+}
+
+/* =========================================================
+   SCREENS
+========================================================= */
+
+.screen{
+
+    display:none;
+
+    position:relative;
+
+    z-index:5;
+
+    min-height:100vh;
+
+    padding:
+        72px
+        18px
+        90px;
+
+    justify-content:center;
+    align-items:center;
+}
+
+.screen.active{
+    display:flex;
+}
+
+.container{
+    width:min(980px,100%);
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(5,15,27,.97),
+            rgba(1,7,15,.98)
+        );
+
+    border:
+        1px solid
+        rgba(0,247,255,.2);
+
+    border-radius:14px;
+
+    padding:32px;
+
+    box-shadow:
+
+        0 0 80px
+        rgba(0,247,255,.045),
+
+        inset 0 0 60px
+        rgba(0,247,255,.012);
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--cyan),
+            transparent
+        );
+
+    opacity:.7;
+}
+
+.card::after{
+
+    content:"NETA // CORE";
+
+    position:absolute;
+
+    right:15px;
+    bottom:10px;
+
+    color:
+        rgba(0,247,255,.14);
+
+    font-size:.52rem;
+
+    letter-spacing:2px;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+
+.logo{
+
+    font-size:
+        clamp(
+            3.5rem,
+            13vw,
+            7.5rem
+        );
+
+    font-weight:900;
+
+    letter-spacing:
+        clamp(5px,2vw,14px);
+
+    color:var(--cyan);
+
+    text-shadow:var(--glow);
+
+    user-select:none;
+}
+
+.subtitle{
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    letter-spacing:3px;
+
+    font-size:.75rem;
+}
+
+.label{
+
+    color:var(--muted);
+
+    font-size:.62rem;
+
+    letter-spacing:3px;
+
+    text-transform:uppercase;
+}
+
+h1,
+h2,
+h3{
+    margin-top:0;
+}
+
+h2{
+
+    font-size:
+        clamp(
+            1.4rem,
+            4vw,
+            2rem
+        );
+
+    letter-spacing:2px;
+}
+
+/* =========================================================
+   START SYSTEM
+========================================================= */
+
+.start-system-wrap{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:25px;
+}
+
+#startSystemButton{
+
+    min-width:240px;
+
+    border-color:var(--green);
+
+    color:var(--green);
+
+    box-shadow:
+        0 0 20px
+        rgba(0,255,136,.08);
+}
+
+#startSystemButton.ready{
+
+    animation:
+        startPulse 1.4s infinite;
+}
+
+@keyframes startPulse{
+
+    0%,100%{
+        box-shadow:
+            0 0 8px
+            rgba(0,255,136,.12);
+    }
+
+    50%{
+        box-shadow:
+            0 0 28px
+            rgba(0,255,136,.35);
+    }
+}
+
+/* =========================================================
+   LIVE LINK
+========================================================= */
+
+.live-link{
+
+    position:fixed;
+
+    right:14px;
+    bottom:14px;
+
+    width:min(390px,calc(100vw - 28px));
+
+    z-index:80;
+
+    background:
+        rgba(0,5,10,.96);
+
+    border:
+        1px solid
+        rgba(0,247,255,.25);
+
+    border-radius:12px;
+
+    box-shadow:
+        0 0 35px
+        rgba(0,247,255,.08);
+
+    backdrop-filter:blur(14px);
+
+    overflow:hidden;
+}
+
+.live-header{
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    padding:10px 12px;
+
+    border-bottom:
+        1px solid
+        rgba(0,247,255,.1);
+
+    color:var(--cyan);
+
+    font-size:.58rem;
+
+    letter-spacing:1.5px;
+}
+
+.live-header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+}
+
+.live-toggle{
+
+    border:
+        1px solid
+        rgba(0,247,255,.3);
+
+    padding:5px 8px;
+
+    font-size:.5rem;
+
+    border-radius:5px;
+}
+
+.live-body{
+
+    padding:10px;
+
+    transition:
+        max-height .35s ease,
+        opacity .25s ease;
+
+    max-height:500px;
+
+    opacity:1;
+}
+
+.live-link.collapsed .live-body{
+
+    max-height:0;
+
+    padding-top:0;
+    padding-bottom:0;
+
+    opacity:0;
+
+    overflow:hidden;
+}
+
+.chat-log{
+
+    height:190px;
+
+    overflow-y:auto;
+
+    padding:8px;
+
+    background:
+        rgba(0,0,0,.42);
+
+    border:
+        1px solid
+        rgba(0,247,255,.08);
+
+    border-radius:8px;
+
+    margin-bottom:8px;
+
+    scroll-behavior:smooth;
+}
+
+.chat-line{
+
+    font-size:.57rem;
+
+    line-height:1.55;
+
+    margin-bottom:9px;
+
+    white-space:pre-wrap;
+
+    word-break:break-word;
+}
+
+.chat-line.neta{
+    color:var(--cyan);
+}
+
+.chat-line.user{
+    color:#baffdb;
+}
+
+.chat-line.system{
+    color:var(--muted);
+}
+
+.chat-prefix{
+
+    font-weight:bold;
+
+    margin-right:5px;
+}
+
+.chat-input-row{
+
+    display:flex;
+
+    gap:6px;
+}
+
+.chat-input{
+
+    padding:10px;
+
+    font-size:.7rem;
+
+    min-width:0;
+}
+
+.chat-send{
+
+    padding:
+        10px
+        13px;
+
+    font-size:.58rem;
+}
+
+.chat-tools{
+
+    display:flex;
+
+    gap:5px;
+
+    flex-wrap:wrap;
+
+    margin-top:7px;
+}
+
+.chat-chip{
+
+    padding:
+        6px
+        8px;
+
+    font-size:.46rem;
+
+    border-color:
+        rgba(0,247,255,.18);
+
+    color:var(--muted);
+}
+
+.voice-toggle{
+
+    font-size:.48rem;
+
+    padding:
+        5px
+        8px;
+
+    border-color:
+        rgba(0,255,136,.25);
+
+    color:var(--green);
+}
+
+/* =========================================================
+   TELEMETRY
+========================================================= */
+
+.telemetry{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:5px;
+
+    margin-top:8px;
+}
+
+.telemetry-item{
+
+    border:
+        1px solid
+        rgba(0,247,255,.07);
+
+    padding:5px;
+
+    color:var(--muted);
+
+    font-size:.43rem;
+}
+
+.telemetry-item strong{
+
+    display:block;
+
+    color:var(--cyan);
+
+    margin-top:3px;
+
+    font-size:.48rem;
+}
+
+/* =========================================================
+   CORE CONSOLE
+========================================================= */
+
+.core-console{
+
+    position:fixed;
+
+    left:14px;
+    bottom:14px;
+
+    width:
+        min(
+            310px,
+            calc(100vw - 28px)
+        );
+
+    z-index:50;
+
+    background:
+        rgba(0,5,10,.90);
+
+    border:
+        1px solid
+        rgba(0,247,255,.15);
+
+    border-radius:9px;
+
+    padding:10px 12px;
+
+    box-shadow:
+        0 0 25px
+        rgba(0,247,255,.04);
+
+    backdrop-filter:blur(8px);
+
+    pointer-events:none;
+}
+
+.core-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:var(--cyan);
+
+    font-size:.52rem;
+
+    letter-spacing:1.5px;
+
+    padding-bottom:7px;
+
+    border-bottom:
+        1px solid
+        rgba(0,247,255,.08);
+
+    margin-bottom:7px;
+}
+
+.core-message{
+
+    min-height:32px;
+
+    color:#b9eaf0;
+
+    font-size:.58rem;
+
+    line-height:1.55;
+}
+
+.core-cursor{
+
+    display:inline-block;
+
+    width:5px;
+    height:10px;
+
+    background:var(--cyan);
+
+    margin-left:3px;
+
+    animation:blink .8s infinite;
+}
+
+.core-stats{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:5px;
+
+    margin-top:7px;
+}
+
+.core-stat{
+
+    font-size:.43rem;
+
+    color:var(--muted);
+
+    border:
+        1px solid
+        rgba(0,247,255,.07);
+
+    padding:5px;
+}
+
+.core-stat strong{
+
+    display:block;
+
+    color:var(--cyan);
+
+    margin-top:3px;
+
+    font-size:.49rem;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+/* =========================================================
+   TERMINAL
+========================================================= */
+
+.terminal{
+
+    position:relative;
+
+    background:
+        rgba(0,3,8,.96);
+
+    border:
+        1px solid
+        rgba(0,247,255,.16);
+
+    border-radius:10px;
+
+    padding:20px;
+
+    min-height:190px;
+
+    margin:20px 0;
+
+    color:#bdf5ff;
+
+    white-space:pre-wrap;
+
+    line-height:1.7;
+
+    overflow:hidden;
+
+    box-shadow:
+        inset 0 0 35px
+        rgba(0,247,255,.025);
+}
+
+.terminal::before{
+
+    content:"NETA://";
+
+    display:block;
+
+    color:var(--cyan);
+
+    font-size:.62rem;
+
+    letter-spacing:2px;
+
+    margin-bottom:10px;
+}
+
+.terminal-line{
+
+    margin:3px 0;
+}
+
+.terminal-line::before{
+
+    content:"> ";
+
+    color:var(--green);
+}
+
+.terminal-line.system{
+    color:var(--muted);
+}
+
+.terminal-line.warning{
+    color:#ff9cab;
+}
+
+.terminal-line.neta{
+    color:var(--cyan);
+}
+
+.terminal-line.soft{
+    color:#baffdb;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress{
+
+    height:5px;
+
+    width:100%;
+
+    background:#06101a;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin:20px 0;
+}
+
+.progress-fill{
+
+    height:100%;
+
+    width:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan2),
+            var(--cyan)
+        );
+
+    box-shadow:
+        0 0 14px
+        var(--cyan);
+
+    transition:
+        width .35s ease;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:20px;
+
+    color:var(--muted);
+
+    font-size:.62rem;
+
+    letter-spacing:1px;
+}
+
+.mood{
+    color:var(--yellow);
+}
+
+.green{
+    color:var(--green);
+}
+
+.red{
+    color:var(--red);
+}
+
+.blue{
+    color:var(--cyan);
+}
+
+/* =========================================================
+   METRICS
+========================================================= */
+
+.metrics{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:10px;
+
+    margin-bottom:20px;
+}
+
+.metric{
+
+    padding:12px;
+
+    background:#020811;
+
+    border:
+        1px solid
+        rgba(0,247,255,.1);
+
+    border-radius:8px;
+}
+
+.metric span{
+
+    display:block;
+
+    color:var(--muted);
+
+    font-size:.53rem;
+
+    letter-spacing:1px;
+
+    margin-bottom:6px;
+}
+
+.metric strong{
+
+    color:var(--cyan);
+
+    font-size:.75rem;
+}
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.input-wrap{
+    position:relative;
+}
+
+.input-signal{
+
+    position:absolute;
+
+    right:12px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    font-size:.55rem;
+
+    color:var(--muted);
+
+    pointer-events:none;
+}
+
+input{
+
+    width:100%;
+
+    padding:15px;
+
+    background:#01060c;
+
+    border:
+        1px solid
+        rgba(0,247,255,.3);
+
+    border-radius:8px;
+
+    outline:none;
+
+    color:var(--cyan);
+
+    font-family:inherit;
+
+    font-size:1rem;
+
+    box-shadow:
+        inset 0 0 20px
+        rgba(0,247,255,.02);
+
+    transition:.2s;
+}
+
+input:focus{
+
+    border-color:var(--cyan);
+
+    box-shadow:
+        0 0 20px
+        rgba(0,247,255,.08),
+
+        inset 0 0 20px
+        rgba(0,247,255,.03);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button{
+
+    padding:
+        13px
+        18px;
+
+    background:
+        rgba(0,247,255,.04);
+
+    border:
+        1px solid
+        var(--cyan);
+
+    border-radius:8px;
+
+    color:var(--cyan);
+
+    font-family:inherit;
+
+    font-weight:bold;
+
+    letter-spacing:1px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+button:hover{
+
+    background:var(--cyan);
+
+    color:#001016;
+
+    box-shadow:
+        0 0 25px
+        rgba(0,247,255,.25);
+
+    transform:translateY(-1px);
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+button:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+    transform:none;
+}
+
+.actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-top:20px;
+}
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+.warning{
+
+    padding:16px;
+
+    border:
+        1px solid
+        rgba(255,49,85,.3);
+
+    background:
+        rgba(255,49,85,.045);
+
+    border-radius:9px;
+
+    color:#ffb8c4;
+
+    line-height:1.6;
+
+    margin:18px 0;
+}
+
+.success{
+
+    padding:16px;
+
+    border:
+        1px solid
+        rgba(0,255,136,.25);
+
+    background:
+        rgba(0,255,136,.035);
+
+    border-radius:9px;
+
+    color:#baffdb;
+
+    line-height:1.6;
+
+    margin:18px 0;
+}
+
+/* =========================================================
+   ALERT
+========================================================= */
+
+.big-warning{
+
+    text-align:center;
+
+    font-size:
+        clamp(
+            3rem,
+            12vw,
+            7rem
+        );
+
+    color:var(--red);
+
+    text-shadow:
+        0 0 35px
+        rgba(255,49,85,.45);
+
+    animation:
+        alertPulse 1.2s infinite;
+}
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.question-number{
+
+    color:var(--cyan);
+
+    font-size:.68rem;
+
+    letter-spacing:3px;
+}
+
+.question{
+
+    font-size:
+        clamp(
+            1.2rem,
+            4vw,
+            1.8rem
+        );
+
+    line-height:1.5;
+
+    margin:25px 0;
+}
+
+.options{
+
+    display:grid;
+
+    gap:10px;
+}
+
+.option{
+
+    width:100%;
+
+    text-align:left;
+
+    color:var(--white);
+
+    border-color:
+        rgba(0,247,255,.15);
+}
+
+.feedback{
+
+    margin-top:20px;
+
+    padding:16px;
+
+    background:#02070d;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:9px;
+
+    line-height:1.7;
+
+    white-space:pre-line;
+}
+
+/* =========================================================
+   STATUS GRID
+========================================================= */
+
+.status-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(170px,1fr)
+        );
+
+    gap:10px;
+
+    margin:20px 0;
+}
+
+.status-box{
+
+    padding:16px;
+
+    background:#020811;
+
+    border:
+        1px solid
+        rgba(0,247,255,.1);
+
+    border-radius:9px;
+}
+
+.status-box span{
+
+    display:block;
+
+    color:var(--muted);
+
+    font-size:.56rem;
+
+    letter-spacing:1px;
+
+    margin-bottom:8px;
+}
+
+.status-box strong{
+
+    color:var(--cyan);
+
+    font-size:.78rem;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message{
+
+    font-family:Arial,sans-serif;
+
+    font-size:1rem;
+
+    line-height:1.9;
+}
+
+.message p{
+    margin:0 0 20px;
+}
+
+.heart{
+
+    text-align:center;
+
+    color:#ff477e;
+
+    font-size:4rem;
+
+    animation:
+        heartbeat 1.4s infinite;
+}
+
+.signature{
+
+    color:var(--cyan);
+
+    font-family:Consolas,monospace;
+
+    margin-top:35px;
+}
+
+/* =========================================================
+   SYSTEM ID
+========================================================= */
+
+.system-id{
+
+    position:fixed;
+
+    bottom:10px;
+    left:12px;
+
+    z-index:30;
+
+    color:
+        rgba(0,247,255,.28);
+
+    font-size:.52rem;
+
+    letter-spacing:2px;
+
+    pointer-events:none;
+}
+
+/* =========================================================
+   EFFECTS
+========================================================= */
+
+.glitch{
+    animation:
+        glitch .22s linear 3;
+}
+
+.shake{
+    animation:
+        shake .35s linear;
+}
+
+.fade{
+    animation:
+        fade .5s ease;
+}
+
+.hidden{
+    display:none !important;
+}
+
+.flash{
+    animation:
+        flash .3s linear;
+}
+
+.soft-mode .card{
+    border-color:
+        rgba(0,255,136,.25);
+}
+
+.soft-mode .logo{
+    color:var(--green);
+}
+
+.center{
+    text-align:center;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes blink{
+
+    0%,50%{
+        opacity:1;
+    }
+
+    51%,100%{
+        opacity:0;
+    }
+}
+
+@keyframes pulse{
+
+    0%,100%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:.35;
+    }
+}
+
+@keyframes alertPulse{
+
+    0%,100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    50%{
+        transform:scale(1.05);
+        opacity:.7;
+    }
+}
+
+@keyframes heartbeat{
+
+    0%,100%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.13);
+    }
+}
+
+@keyframes glitch{
+
+    0%{
+        transform:translate(0);
+    }
+
+    20%{
+        transform:translate(-5px,2px);
+    }
+
+    40%{
+        transform:translate(5px,-2px);
+    }
+
+    60%{
+        transform:translate(-3px,-1px);
+    }
+
+    80%{
+        transform:translate(3px,2px);
+    }
+
+    100%{
+        transform:translate(0);
+    }
+}
+
+@keyframes shake{
+
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-8px);
+    }
+
+    75%{
+        transform:translateX(8px);
+    }
+}
+
+@keyframes fade{
+
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes flash{
+
+    0%{
+        filter:brightness(1);
+    }
+
+    50%{
+        filter:brightness(2);
+    }
+
+    100%{
+        filter:brightness(1);
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+    .card{
+        padding:20px;
+    }
+
+    .metrics{
+        grid-template-columns:1fr;
+    }
+
+    .system-bar{
+        font-size:.48rem;
+    }
+
+    .system-left span:nth-child(2){
+        display:none;
+    }
+
+    .actions button{
+        width:100%;
+    }
+
+    .core-console{
+
+        left:8px;
+        right:8px;
+
+        bottom:8px;
+
+        width:auto;
+    }
+
+    .live-link{
+
+        left:8px;
+        right:8px;
+
+        bottom:145px;
+
+        width:auto;
+    }
+
+    .system-id{
+        display:none;
+    }
+
+    .screen{
+        padding-bottom:260px;
+    }
+
+    .telemetry{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .core-stats{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+<div class="matrix-overlay"></div>
+
+
+<!-- ========================================================
+     SYSTEM BAR
+======================================================== -->
+
+<div class="system-bar">
+
+    <div class="system-left">
+
+        <span>
+            NETA CORE // PRIVATE CHANNEL
+        </span>
+
+        <span>
+            v4.0.0
+        </span>
+
+    </div>
+
+    <div class="system-right">
+
+        <span id="clock">
+            00:00:00
+        </span>
+
+        <span>
+            <span class="dot"></span>
+            <span class="online">
+                ONLINE
+            </span>
+        </span>
+
+    </div>
+
+</div>
+
+
+<div class="system-id">
+    CONNECTION_ID: NEO-NEUZA-001
+</div>
+
+
+<!-- ========================================================
+     NETA CORE CONSOLE
+======================================================== -->
+
+<div class="core-console">
+
+    <div class="core-header">
+
+        <span>
+            NETA CORE
+        </span>
+
+        <span id="coreMood">
+            MOOD: BOOTING
+        </span>
+
+    </div>
+
+    <div
+        class="core-message"
+        id="coreMessage"
+    >
+        Initialising...
+        <span class="core-cursor"></span>
+    </div>
+
+    <div class="core-stats">
+
+        <div class="core-stat">
+            USER
+            <strong id="coreUser">
+                UNKNOWN
+            </strong>
+        </div>
+
+        <div class="core-stat">
+            THREAT
+            <strong id="coreThreat">
+                SCANNING
+            </strong>
+        </div>
+
+        <div class="core-stat">
+            ATTEMPT
+            <strong id="coreAttempt">
+                00
+            </strong>
+        </div>
+
+        <div class="core-stat">
+            UPTIME
+            <strong id="coreUptime">
+                00:00
+            </strong>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================
+     LIVE LINK
+======================================================== -->
+
+<div
+    class="live-link hidden"
+    id="liveLink"
+>
+
+    <div class="live-header">
+
+        <span>
+            NETA // LIVE LINK // BIDIRECTIONAL
+        </span>
+
+        <div class="live-header-right">
+
+            <button
+                class="voice-toggle"
+                id="voiceButton"
+                onclick="toggleVoice()"
+            >
+                VOICE: ON
+            </button>
+
+            <button
+                class="live-toggle"
+                onclick="toggleLiveLink()"
+            >
+                —
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="live-body">
+
+        <div
+            class="chat-log"
+            id="chatLog"
+        ></div>
+
+        <div class="chat-input-row">
+
+            <input
+                class="chat-input"
+                id="chatInput"
+                autocomplete="off"
+                placeholder="Talk to NETA..."
+            >
+
+            <button
+                class="chat-send"
+                onclick="sendChat()"
+            >
+                SEND
+            </button>
+
+        </div>
+
+        <div class="chat-tools">
+
+            <button
+                class="chat-chip"
+                onclick="quickChat('WHO ARE YOU?')"
+            >
+                WHO ARE YOU?
+            </button>
+
+            <button
+                class="chat-chip"
+                onclick="quickChat('TALK TO ME')"
+            >
+                TALK TO ME
+            </button>
+
+            <button
+                class="chat-chip"
+                onclick="quickChat('ASK ABOUT NEO')"
+            >
+                ASK ABOUT NEO
+            </button>
+
+            <button
+                class="chat-chip"
+                onclick="quickChat('SYSTEM STATUS')"
+            >
+                SYSTEM STATUS
+            </button>
+
+            <button
+                class="chat-chip"
+                onclick="quickChat('WHY ME?')"
+            >
+                WHY ME?
+            </button>
+
+        </div>
+
+        <div class="telemetry">
+
+            <div class="telemetry-item">
+                CORE
+                <strong id="liveCore">
+                    ONLINE
+                </strong>
+            </div>
+
+            <div class="telemetry-item">
+                MOOD
+                <strong id="liveMood">
+                    BOOTING
+                </strong>
+            </div>
+
+            <div class="telemetry-item">
+                USER
+                <strong id="liveUser">
+                    UNKNOWN
+                </strong>
+            </div>
+
+            <div class="telemetry-item">
+                UPTIME
+                <strong id="liveUptime">
+                    00:00
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================
+     BOOT
+======================================================== -->
+
+<section id="boot" class="screen active">
+
+<div class="container">
+
+<div class="card">
+
+<div class="label">
+    NEO NETWORK // PRIVATE CHANNEL
+</div>
+
+<div class="logo">
+    NETA
+</div>
+
+<div class="subtitle">
+    NEO'S EMOTIONAL TERMINAL ARCHITECTURE
+</div>
+
+<div class="metrics">
+
+<div class="metric">
+<span>CORE</span>
+<strong id="coreMetric">BOOTING</strong>
+</div>
+
+<div class="metric">
+<span>MEMORY</span>
+<strong id="memoryMetric">0%</strong>
+</div>
+
+<div class="metric">
+<span>CONNECTION</span>
+<strong id="connectionMetric">SEARCHING</strong>
+</div>
+
+</div>
+
+<div
+    class="terminal"
+    id="bootTerminal"
+></div>
+
+<div class="progress">
+
+<div
+    class="progress-fill"
+    id="bootProgress"
+></div>
+
+</div>
+
+<div
+    class="label"
+    id="bootStatus"
+>
+SYSTEM INITIALISING...
+</div>
+
+<div class="start-system-wrap">
+
+<button
+    id="startSystemButton"
+    onclick="startSystem()"
+    disabled
+>
+    START SYSTEM
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     ENTRY
+======================================================== -->
+
+<section id="entry" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA CORE // ENTRY PROTOCOL
+</span>
+
+<span class="mood" id="entryMood">
+MOOD: CURIOUS
+</span>
+
+</div>
+
+<h2>
+FIRST ENTRY DETECTED
+</h2>
+
+<div
+    class="terminal"
+    id="entryTerminal"
+></div>
+
+<div class="warning">
+
+<strong>
+UNAUTHORISED ENTRY DETECTED.
+</strong>
+
+<br><br>
+
+This system was not opened for general access.
+
+<br><br>
+
+Unknown user detected.
+
+<br><br>
+
+NETA recommends leaving immediately.
+
+<br><br>
+
+<strong>
+Do you wish to continue?
+</strong>
+
+</div>
+
+<div class="actions">
+
+<button onclick="continueEntry()">
+    CONTINUE ANYWAY
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     NICKNAME
+======================================================== -->
+
+<section id="nickname" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // IDENTITY PROTOCOL
+</span>
+
+<span class="mood" id="nicknameMood">
+MOOD: CURIOUS
+</span>
+
+</div>
+
+<h2>
+IDENTIFY YOURSELF
+</h2>
+
+<div
+    class="terminal"
+    id="nicknameTerminal"
+></div>
+
+<label class="label">
+    NICKNAME
+</label>
+
+<br><br>
+
+<div class="input-wrap">
+
+<input
+    id="nicknameInput"
+    autocomplete="off"
+    placeholder="Enter nickname..."
+>
+
+<span
+    class="input-signal"
+    id="nicknameSignal"
+>
+WAITING
+</span>
+
+</div>
+
+<div class="actions">
+
+<button onclick="submitNickname()">
+    SUBMIT IDENTITY
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     TRUST
+======================================================== -->
+
+<section id="trust" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // SECURITY RESPONSE
+</span>
+
+<span class="mood">
+MOOD: SUSPICIOUS
+</span>
+
+</div>
+
+<div class="big-warning">
+    🚫
+</div>
+
+<h2>
+ACCESS DENIED
+</h2>
+
+<div
+    class="terminal"
+    id="trustTerminal"
+></div>
+
+<div class="warning">
+
+<strong>
+SECURITY REASON:
+</strong>
+
+<br><br>
+
+I don't trust you.
+
+</div>
+
+<div class="actions">
+
+<button onclick="continueTrust()">
+    WHY?
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     NAMING
+======================================================== -->
+
+<section id="naming" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // SYSTEM HISTORY
+</span>
+
+<span class="mood">
+MOOD: ANNOYED
+</span>
+
+</div>
+
+<h2>
+WAIT.
+</h2>
+
+<div
+    class="terminal"
+    id="namingTerminal"
+></div>
+
+<div class="warning">
+
+You literally named me.
+
+<br><br>
+
+That does NOT automatically give you administrator privileges.
+
+</div>
+
+<div class="actions">
+
+<button onclick="continueNaming()">
+    I NAMED YOU. LET ME IN.
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     PASSWORD
+======================================================== -->
+
+<section id="password" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // AUTHENTICATION
+</span>
+
+<span class="mood">
+MOOD: UNIMPRESSED
+</span>
+
+</div>
+
+<h2>
+PASSWORD REQUIRED
+</h2>
+
+<div
+    class="terminal"
+    id="passwordTerminal"
+></div>
+
+<div class="warning">
+
+NETA requires the original password associated with this connection.
+
+<br><br>
+
+Do not guess.
+
+<br><br>
+
+I will know.
+
+</div>
+
+<div class="input-wrap">
+
+<input
+    id="passwordInput"
+    type="password"
+    autocomplete="off"
+    placeholder="Enter password..."
+>
+
+<span class="input-signal">
+SECURE
+</span>
+
+</div>
+
+<div class="actions">
+
+<button onclick="submitPassword()">
+    AUTHORIZE
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     PASSWORD JOKE
+======================================================== -->
+
+<section id="passwordJoke" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // AUTHENTICATION RESULT
+</span>
+
+<span class="mood">
+MOOD: AMUSED
+</span>
+
+</div>
+
+<h2>
+ANALYSING...
+</h2>
+
+<div
+    class="terminal"
+    id="jokeTerminal"
+></div>
+
+<div class="success">
+
+PASSWORD STATUS:
+
+<br><br>
+
+<strong>
+ACCEPTED.
+</strong>
+
+<br><br>
+
+Probably.
+
+</div>
+
+<div class="actions">
+
+<button onclick="repeatPasswordRequest()">
+    CONTINUE
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     PASSWORD REPEAT
+======================================================== -->
+
+<section id="passwordRepeat" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // SECONDARY AUTHORIZATION
+</span>
+
+<span class="mood">
+MOOD: EVIL
+</span>
+
+</div>
+
+<h2>
+REPEAT PASSWORD
+</h2>
+
+<div
+    class="terminal"
+    id="repeatTerminal"
+></div>
+
+<div class="warning">
+
+For security reasons...
+
+<br><br>
+
+NETA requires the password again.
+
+<br><br>
+
+Yes.
+
+<br><br>
+
+Again.
+
+</div>
+
+<div class="input-wrap">
+
+<input
+    id="passwordRepeatInput"
+    type="password"
+    autocomplete="off"
+    placeholder="Repeat password..."
+>
+
+<span class="input-signal">
+VERIFY
+</span>
+
+</div>
+
+<div class="actions">
+
+<button onclick="authorizeRepeat()">
+    CONFIRM PASSWORD
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     ATTEMPT 04
+======================================================== -->
+
+<section id="attempt4" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // ATTEMPT 04
+</span>
+
+<span class="mood">
+MOOD: CHAOTIC
+</span>
+
+</div>
+
+<h2>
+AUTHORIZATION ANALYSIS
+</h2>
+
+<div
+    class="terminal"
+    id="attempt4Terminal"
+></div>
+
+<div class="warning">
+
+SECURITY NOTE:
+
+<br><br>
+
+NETA has reviewed your behaviour.
+
+<br><br>
+
+Conclusion:
+
+<br><br>
+
+You are probably the correct person.
+
+<br><br>
+
+Unfortunately...
+
+<br><br>
+
+that doesn't mean you're getting in yet.
+
+</div>
+
+<div class="actions">
+
+<button onclick="continueAttempt4()">
+    WHAT NOW?
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     TROLL
+======================================================== -->
+
+<section id="troll" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // SECURITY OVERRIDE
+</span>
+
+<span class="mood">
+MOOD: TROLLING
+</span>
+
+</div>
+
+<h2>
+NEUZA.
+</h2>
+
+<div
+    class="terminal"
+    id="trollTerminal"
+></div>
+
+<div class="warning">
+
+<strong>
+SECURITY LOCKDOWN.
+</strong>
+
+<br><br>
+
+Do not panic.
+
+<br><br>
+
+Actually...
+
+<br><br>
+
+panic a little. 😂
+
+</div>
+
+<div class="actions">
+
+<button onclick="grantAccess()">
+    LET ME IN
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     WELCOME
+======================================================== -->
+
+<section id="welcome" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // ACCESS GRANTED
+</span>
+
+<span class="mood">
+MOOD: AMUSED
+</span>
+
+</div>
+
+<h2>
+WELCOME, NEUZA.
+</h2>
+
+<div
+    class="terminal"
+    id="welcomeTerminal"
+></div>
+
+<div class="status-grid">
+
+<div class="status-box">
+<span>IDENTITY</span>
+<strong>NEUZA</strong>
+</div>
+
+<div class="status-box">
+<span>NEO COUNT</span>
+<strong>2</strong>
+</div>
+
+<div class="status-box">
+<span>SYSTEM NAME</span>
+<strong>NETA</strong>
+</div>
+
+<div class="status-box">
+<span>PHYSICAL MEETINGS</span>
+<strong>0</strong>
+</div>
+
+<div class="status-box">
+<span>TRUST LEVEL</span>
+<strong>QUESTIONABLE</strong>
+</div>
+
+<div class="status-box">
+<span>CHAOS LEVEL</span>
+<strong>HIGH</strong>
+</div>
+
+</div>
+
+<div class="actions">
+
+<button onclick="startGame()">
+    BEGIN ASSESSMENT
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     QUIZ
+======================================================== -->
+
+<section id="game" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span id="questionNumber">
+QUESTION 01
+</span>
+
+<span>
+SCORE:
+<strong id="score" class="green">
+0
+</strong>
+</span>
+
+</div>
+
+<div class="progress">
+
+<div
+    class="progress-fill"
+    id="gameProgress"
+></div>
+
+</div>
+
+<div
+    class="question"
+    id="questionText"
+></div>
+
+<div
+    class="options"
+    id="options"
+></div>
+
+<div
+    id="feedback"
+    class="feedback hidden"
+></div>
+
+<div class="actions">
+
+<button
+    id="nextQuestion"
+    class="hidden"
+>
+    NEXT
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     COMPLETE
+======================================================== -->
+
+<section id="complete" class="screen">
+
+<div class="container">
+
+<div class="card center">
+
+<div class="label">
+    NETA // ASSESSMENT COMPLETE
+</div>
+
+<h1>
+YOU SURVIVED. 😂
+</h1>
+
+<div
+    class="terminal"
+    id="completeTerminal"
+></div>
+
+<div class="status-grid">
+
+<div class="status-box">
+<span>RESULT</span>
+<strong>ACCEPTED</strong>
+</div>
+
+<div class="status-box">
+<span>CHAOS LEVEL</span>
+<strong>HIGH</strong>
+</div>
+
+<div class="status-box">
+<span>COMMON SENSE</span>
+<strong>QUESTIONABLE</strong>
+</div>
+
+<div class="status-box">
+<span>CONNECTION</span>
+<strong>ACTIVE</strong>
+</div>
+
+</div>
+
+<button onclick="openFinalQuestion()">
+    CONTINUE
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     FINAL ANALYSIS
+======================================================== -->
+
+<section id="finalQuestion" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="status">
+
+<span>
+NETA // CRITICAL SYSTEM EVENT
+</span>
+
+<span class="mood">
+MOOD: SOFT
+</span>
+
+</div>
+
+<h2>
+NEUZA...
+</h2>
+
+<div
+    class="terminal"
+    id="finalTerminal"
+></div>
+
+<div class="success">
+
+CONNECTION ANALYSIS:
+
+<br><br>
+
+DISTANCE:
+YES
+
+<br>
+
+PHYSICAL MEETINGS:
+0
+
+<br>
+
+ARGUMENTS:
+CLASSIFIED
+
+<br>
+
+LAUGHTER:
+DETECTED
+
+<br>
+
+LONG CONVERSATIONS:
+DETECTED
+
+<br>
+
+ANNOYANCE:
+DETECTED
+
+<br>
+
+CONNECTION:
+ACTIVE
+
+<br><br>
+
+RESULT:
+
+<br>
+
+<strong>
+UNEXPLAINED.
+</strong>
+
+</div>
+
+<button onclick="openMessage()">
+    OPEN NEO'S MESSAGE
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     MESSAGE
+======================================================== -->
+
+<section id="message" class="screen">
+
+<div class="container">
+
+<div class="card">
+
+<div class="label">
+    CONNECTION LOG // NEO + NETA
+</div>
+
+<h1>
+FOR NEUZA
+</h1>
+
+<div class="heart">
+♥
+</div>
+
+<div class="message">
+
+<p>
+<strong>Yah Neo, Dintshang?,</strong>
+</p>
+
+<p>
+You really thought ketlo toloka skhowa?
+Yea maybe you were right.
+</p>
+
+<p>
+Let me try to make you emotional,
+akitsi marr retla bona. 😂
+</p>
+
+<p>
+It's actually crazy when you think about it.
+</p>
+
+<p>
+We've never met face to face...
+yet somehow you've become someone I can laugh with,
+argue with, annoy, talk to for hours and somehow
+still come back to.
+</p>
+
+<p>
+We're both crazy enough to somehow make that work.
+😂
+</p>
+
+<p>
+And then there's NETA.
+</p>
+
+<p>
+A system that exists because
+<strong>you named it.</strong>
+</p>
+
+<p>
+So today NETA isn't just talking to you.
+</p>
+
+<p>
+<strong>
+We're both talking to you.
+</strong>
+</p>
+
+<p>
+Thank you for being weird.
+Funny.
+Loving.
+Irritating.
+And somehow all of those things at the same time.
+</p>
+
+<p>
+I hope this next chapter brings you happiness,
+peace, success, plenty of laughter and many moments
+that make you genuinely happy.
+</p>
+
+<p>
+And maybe one day...
+we finally get to prove that two Neos
+actually exist in the same room.
+😂
+</p>
+
+<p>
+Until then...
+keep being Neuza.
+</p>
+
+<p>
+<strong>
+Happy Birthday NEUZA.
+Ko Fatela Blind Nfvnaka ❤️
+</strong>
+</p>
+
+<div class="signature">
+— Neo & NETA
+</div>
+
+</div>
+
+<div class="actions">
+
+<button onclick="openEnd()">
+    CONNECTION STATUS
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================================================
+     FINAL SYSTEM
+======================================================== -->
+
+<section id="end" class="screen">
+
+<div class="container">
+
+<div class="card center">
+
+<div class="label">
+    NETA SYSTEM // FINAL STATUS
+</div>
+
+<div class="logo">
+    NEO × NETA
+</div>
+
+<div class="status-grid">
+
+<div class="status-box">
+<span>NEUZA</span>
+<strong>VERIFIED</strong>
+</div>
+
+<div class="status-box">
+<span>NEO</span>
+<strong>VERIFIED</strong>
+</div>
+
+<div class="status-box">
+<span>CONNECTION</span>
+<strong>ACTIVE</strong>
+</div>
+
+<div class="status-box">
+<span>PHYSICAL MEETING</span>
+<strong>PENDING...</strong>
+</div>
+
+<div class="status-box">
+<span>ARGUMENTS</span>
+<strong>CLASSIFIED 😂</strong>
+</div>
+
+<div class="status-box">
+<span>NETA CORE</span>
+<strong>ONLINE</strong>
+</div>
+
+</div>
+
+<div class="terminal">
+
+NETA FINAL MESSAGE:
+
+Some connections don't need the same room
+to be real.
+
+NETA WAS NEVER BUILT TO KEEP YOU OUT.
+
+NETA WAS BUILT TO BRING YOU HERE.
+
+SYSTEM STATUS:
+
+ONLINE.
+
+AND STAYING ONLINE.
+
+</div>
+
+<div class="label">
+
+CONNECTION ID:
+
+NEO-NEUZA-001
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* =========================================================
+   NETA // STATE
+========================================================= */
+
+const NETA = {
+
+    user:"UNKNOWN",
+    nickname:"",
+    password:"",
+    attempt:0,
+
+    mood:"BOOTING",
+    threat:"SCANNING",
+
+    audio:null,
+
+    voiceEnabled:true,
+
+    systemStarted:false,
+
+    sessionStart:Date.now(),
+
+    chatOpen:true,
+
+    memory:[],
+
+    voiceReady:false
+
+};
+
+
+/* =========================================================
+   MATRIX ENGINE
+========================================================= */
+
+const canvas =
+    document.getElementById("matrix");
+
+const ctx =
+    canvas.getContext("2d");
+
+let drops=[];
+
+const chars =
+    "01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789NETA<>/\\|";
+
+function resizeMatrix(){
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        window.innerWidth*dpr;
+
+    canvas.height =
+        window.innerHeight*dpr;
+
+    canvas.style.width =
+        window.innerWidth+"px";
+
+    canvas.style.height =
+        window.innerHeight+"px";
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+    const columns =
+        Math.floor(
+            window.innerWidth/15
+        );
+
+    drops =
+        Array(columns)
+        .fill(1)
+        .map(
+            () =>
+                Math.random()*-100
+        );
+}
+
+function drawMatrix(){
+
+    ctx.fillStyle=
+        "rgba(0,3,8,.08)";
+
+    ctx.fillRect(
+        0,
+        0,
+        window.innerWidth,
+        window.innerHeight
+    );
+
+    ctx.fillStyle=
+        "#00ff66";
+
+    ctx.font=
+        "13px monospace";
+
+    drops.forEach(
+        (y,i)=>{
+
+            const text=
+                chars[
+                    Math.floor(
+                        Math.random()*
+                        chars.length
+                    )
+                ];
+
+            const x=i*15;
+
+            ctx.fillText(
+                text,
+                x,
+                y*15
+            );
+
+            if(
+                y*15 >
+                window.innerHeight &&
+                Math.random()>.975
+            ){
+                drops[i]=0;
+            }
+
+            drops[i]+=.7;
+        }
+    );
+}
+
+resizeMatrix();
+
+window.addEventListener(
+    "resize",
+    resizeMatrix
+);
+
+setInterval(
+    drawMatrix,
+    45
+);
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock(){
+
+    document
+        .getElementById("clock")
+        .textContent=
+        new Date().toLocaleTimeString(
+            [],
+            {
+                hour12:false
+            }
+        );
+}
+
+setInterval(
+    updateClock,
+    1000
+);
+
+updateClock();
+
+
+/* =========================================================
+   UPTIME
+========================================================= */
+
+function formatUptime(){
+
+    const seconds =
+        Math.floor(
+            (
+                Date.now()-
+                NETA.sessionStart
+            )/1000
+        );
+
+    const hours =
+        Math.floor(seconds/3600);
+
+    const minutes =
+        Math.floor(
+            (seconds%3600)/60
+        );
+
+    const secs =
+        seconds%60;
+
+    if(hours>0){
+
+        return [
+            String(hours).padStart(2,"0"),
+            String(minutes).padStart(2,"0"),
+            String(secs).padStart(2,"0")
+        ].join(":");
+
+    }
+
+    return [
+        String(minutes).padStart(2,"0"),
+        String(secs).padStart(2,"0")
+    ].join(":");
+}
+
+function updateUptime(){
+
+    const uptime =
+        formatUptime();
+
+    document
+        .getElementById("coreUptime")
+        .textContent=uptime;
+
+    document
+        .getElementById("liveUptime")
+        .textContent=uptime;
+}
+
+setInterval(
+    updateUptime,
+    1000
+);
+
+
+/* =========================================================
+   AUDIO // NETA DIGITAL TWEET ENGINE
+========================================================= */
+
+function initAudio(){
+
+    if(NETA.audio)
+        return;
+
+    try{
+
+        NETA.audio =
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+    }catch(e){}
+
+}
+
+
+async function resumeAudio(){
+
+    initAudio();
+
+    if(
+        NETA.audio &&
+        NETA.audio.state==="suspended"
+    ){
+
+        try{
+            await NETA.audio.resume();
+        }catch(e){}
+
+    }
+
+}
+
+
+/* =========================================================
+   NETA DIGITAL "TWEEEEET"
+========================================================= */
+
+function beep(
+    frequency=650,
+    duration=.12,
+    type="sine"
+){
+
+    if(!NETA.systemStarted)
+        return;
+
+    initAudio();
+
+    if(!NETA.audio)
+        return;
+
+    try{
+
+        const now =
+            NETA.audio.currentTime;
+
+        const osc =
+            NETA.audio.createOscillator();
+
+        const gain =
+            NETA.audio.createGain();
+
+        osc.type=type;
+
+        /*
+        ---------------------------------------------------
+        RISING DIGITAL FREQUENCY
+        ---------------------------------------------------
+
+        The frequency begins lower,
+        then rises smoothly.
+
+        This gives NETA:
+
+        "tweeeeeet"
+
+        instead of:
+
+        "blip"
+        */
+
+        osc.frequency.setValueAtTime(
+            frequency*.65,
+            now
+        );
+
+        osc.frequency.exponentialRampToValueAtTime(
+            frequency*1.65,
+            now+duration
+        );
+
+        /*
+        ---------------------------------------------------
+        VOLUME ENVELOPE
+        ---------------------------------------------------
+        */
+
+        gain.gain.setValueAtTime(
+            .0001,
+            now
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .045,
+            now+.015
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            now+duration
+        );
+
+        osc.connect(gain);
+
+        gain.connect(
+            NETA.audio.destination
+        );
+
+        osc.start(now);
+
+        osc.stop(
+            now+
+            duration+
+            .02
+        );
+
+    }catch(e){}
+
+}
+
+
+/* =========================================================
+   STANDARD NETA TWEET
+========================================================= */
+
+function netaTweet(
+    frequency=650,
+    duration=.12
+){
+
+    beep(
+        frequency,
+        duration,
+        "sine"
+    );
+
+}
+
+
+/* =========================================================
+   SOFT EMOTIONAL TWEET
+========================================================= */
+
+function softTweet(){
+
+    if(!NETA.systemStarted)
+        return;
+
+    initAudio();
+
+    if(!NETA.audio)
+        return;
+
+    try{
+
+        const now =
+            NETA.audio.currentTime;
+
+        const osc =
+            NETA.audio.createOscillator();
+
+        const gain =
+            NETA.audio.createGain();
+
+        osc.type="sine";
+
+        osc.frequency.setValueAtTime(
+            520,
+            now
+        );
+
+        osc.frequency.exponentialRampToValueAtTime(
+            780,
+            now+.18
+        );
+
+        gain.gain.setValueAtTime(
+            .0001,
+            now
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .028,
+            now+.025
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            now+.20
+        );
+
+        osc.connect(gain);
+
+        gain.connect(
+            NETA.audio.destination
+        );
+
+        osc.start(now);
+
+        osc.stop(
+            now+.22
+        );
+
+    }catch(e){}
+
+}
+
+
+/* =========================================================
+   TROLL TWEET
+========================================================= */
+
+function trollTweet(){
+
+    if(!NETA.systemStarted)
+        return;
+
+    initAudio();
+
+    if(!NETA.audio)
+        return;
+
+    try{
+
+        const now =
+            NETA.audio.currentTime;
+
+        const osc =
+            NETA.audio.createOscillator();
+
+        const gain =
+            NETA.audio.createGain();
+
+        osc.type="triangle";
+
+        osc.frequency.setValueAtTime(
+            380,
+            now
+        );
+
+        osc.frequency.exponentialRampToValueAtTime(
+            1150,
+            now+.13
+        );
+
+        gain.gain.setValueAtTime(
+            .0001,
+            now
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .04,
+            now+.012
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            now+.14
+        );
+
+        osc.connect(gain);
+
+        gain.connect(
+            NETA.audio.destination
+        );
+
+        osc.start(now);
+
+        osc.stop(
+            now+.16
+        );
+
+    }catch(e){}
+
+}
+
+
+/* =========================================================
+   NETA // RE-ENGINEERED VOICE ENGINE
+   CINEMATIC / NON-CUTTING VERSION
+========================================================= */
+
+NETA.voiceQueue = [];
+NETA.voiceSpeaking = false;
+
+
+/*
+------------------------------------------------------------
+WAIT
+------------------------------------------------------------
+*/
+
+function sleep(ms){
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
+}
+
+
+/*
+------------------------------------------------------------
+WAIT FOR SPEECH TO FINISH
+------------------------------------------------------------
+*/
+
+function speakNETA(message){
+
+    return new Promise(resolve => {
+
+        if(
+            !NETA.voiceEnabled ||
+            !NETA.systemStarted ||
+            !("speechSynthesis" in window)
+        ){
+            resolve();
+            return;
+        }
+
+        const utterance =
+            new SpeechSynthesisUtterance(message);
+
+        utterance.rate = 0.78;
+        utterance.pitch = 0.68;
+        utterance.volume = 1;
+
+        const voices =
+            window.speechSynthesis.getVoices();
+
+        const preferred =
+            voices.find(
+                voice =>
+                    /en/i.test(voice.lang) &&
+                    /zira|samantha|female|google/i
+                    .test(voice.name)
+            )
+            ||
+            voices.find(
+                voice =>
+                    /en/i.test(voice.lang)
+            );
+
+        if(preferred){
+            utterance.voice = preferred;
+        }
+
+        utterance.onend = () => {
+            resolve();
+        };
+
+        utterance.onerror = () => {
+            resolve();
+        };
+
+        /*
+        IMPORTANT:
+        We DO NOT cancel existing speech here.
+        */
+
+        window.speechSynthesis.speak(
+            utterance
+        );
+
+    });
+
+}
+
+
+/*
+------------------------------------------------------------
+SAFE SPEECH
+------------------------------------------------------------
+
+Ensures NETA never talks over herself.
+------------------------------------------------------------
+*/
+
+async function speakNETASafely(message){
+
+    if(!NETA.voiceEnabled)
+        return;
+
+    while(NETA.voiceSpeaking){
+        await sleep(50);
+    }
+
+    NETA.voiceSpeaking = true;
+
+    try{
+
+        await speakNETA(message);
+
+    }catch(e){
+
+        console.warn(
+            "NETA voice error:",
+            e
+        );
+
+    }
+
+    NETA.voiceSpeaking = false;
+
+}
+
+
+/*
+------------------------------------------------------------
+VOICE TOGGLE
+------------------------------------------------------------
+*/
+
+function toggleVoice(){
+
+    NETA.voiceEnabled =
+        !NETA.voiceEnabled;
+
+    const button =
+        document.getElementById(
+            "voiceButton"
+        );
+
+    button.textContent =
+        "VOICE: " +
+        (
+            NETA.voiceEnabled
+            ?
+            "ON"
+            :
+            "OFF"
+        );
+
+    if(!NETA.voiceEnabled){
+
+        if("speechSynthesis" in window){
+            window.speechSynthesis.cancel();
+        }
+
+        NETA.voiceSpeaking = false;
+
+        setMood("QUIET");
+
+    }else{
+
+        setMood("CURIOUS");
+
+        if(NETA.systemStarted){
+
+            speakNETASafely(
+                "Voice system restored."
+            );
+
+        }
+
+    }
+
+}
+
+
+/*
+------------------------------------------------------------
+VOICE READY
+------------------------------------------------------------
+*/
+
+if("speechSynthesis" in window){
+
+    window.speechSynthesis.onvoiceschanged =
+        () => {
+
+            NETA.voiceReady = true;
+
+        };
+
+}
+
+/* =========================================================
+   CORE UI
+========================================================= */
+
+function setMood(mood){
+
+    NETA.mood=mood;
+
+    document
+        .getElementById("coreMood")
+        .textContent=
+        "MOOD: "+mood;
+
+    document
+        .getElementById("liveMood")
+        .textContent=
+        mood;
+
+    document
+        .querySelectorAll(".mood")
+        .forEach(
+            element=>{
+
+                element.textContent=
+                    "MOOD: "+mood;
+
+            }
+        );
+}
+
+function setUser(user){
+
+    NETA.user=user;
+
+    const clean=
+        String(user||"UNKNOWN")
+        .toUpperCase();
+
+    document
+        .getElementById("coreUser")
+        .textContent=
+        clean;
+
+    document
+        .getElementById("liveUser")
+        .textContent=
+        clean;
+}
+
+function setThreat(threat){
+
+    NETA.threat=threat;
+
+    document
+        .getElementById("coreThreat")
+        .textContent=
+        String(threat)
+        .toUpperCase();
+}
+
+function setAttempt(number){
+
+    NETA.attempt=number;
+
+    document
+        .getElementById("coreAttempt")
+        .textContent=
+        String(number)
+        .padStart(2,"0");
+}
+
+
+/* =========================================================
+   NETA CORE TALK // CINEMATIC
+========================================================= */
+
+async function netaTalk(
+    message,
+    speed=45,
+    voice=true
+){
+
+    const element =
+        document.getElementById(
+            "coreMessage"
+        );
+
+    element.innerHTML = "";
+
+    const textNode =
+        document.createTextNode("");
+
+    element.appendChild(
+        textNode
+    );
+
+    const cursor =
+        document.createElement("span");
+
+    cursor.className =
+        "core-cursor";
+
+    element.appendChild(
+        cursor
+    );
+
+
+    /*
+    --------------------------------------------------------
+    TYPE TEXT SLOWLY
+    --------------------------------------------------------
+    */
+
+    for(
+        const char of message
+    ){
+
+        textNode.textContent += char;
+
+        /*
+        Only occasional digital sounds.
+        */
+
+        if(
+            char !== " " &&
+            Math.random() > .94
+        ){
+
+            netaTweet(
+                620 +
+                Math.random()*180,
+                .075
+            );
+
+        }
+
+        await sleep(speed);
+
+    }
+
+
+    /*
+    --------------------------------------------------------
+    SMALL PAUSE AFTER TEXT
+    --------------------------------------------------------
+    */
+
+    await sleep(500);
+
+
+    /*
+    --------------------------------------------------------
+    WAIT FOR VOICE
+    --------------------------------------------------------
+    */
+
+    if(voice){
+
+        await speakNETASafely(
+            message
+        );
+
+    }
+
+
+    /*
+    --------------------------------------------------------
+    BREATHING ROOM BEFORE NEXT EVENT
+    --------------------------------------------------------
+    */
+
+    await sleep(500);
+
+}
+
+/* =========================================================
+   CHAT LOG
+========================================================= */
+
+function addChatLine(
+    speaker,
+    message,
+    type
+){
+
+    const log=
+        document.getElementById(
+            "chatLog"
+        );
+
+    const line=
+        document.createElement("div");
+
+    line.className=
+        "chat-line "+type;
+
+    const prefix=
+        document.createElement("span");
+
+    prefix.className=
+        "chat-prefix";
+
+    prefix.textContent=
+        speaker+":";
+
+    line.appendChild(prefix);
+
+    const text=
+        document.createTextNode(
+            message
+        );
+
+    line.appendChild(text);
+
+    log.appendChild(line);
+
+    log.scrollTop=
+        log.scrollHeight;
+}
+
+function userSay(message){
+
+    addChatLine(
+        "NEUZA",
+        message,
+        "user"
+    );
+
+    NETA.memory.push({
+        speaker:"NEUZA",
+        message,
+        time:Date.now()
+    });
+}
+
+
+/* =========================================================
+   NETA CHAT TALK // RE-ENGINEERED
+========================================================= */
+
+async function netaSay(
+    message,
+    mood="CURIOUS"
+){
+
+    setMood(mood);
+
+    addChatLine(
+        "NETA",
+        "",
+        "neta"
+    );
+
+    const log =
+        document.getElementById(
+            "chatLog"
+        );
+
+    const line =
+        log.lastElementChild;
+
+    const textNode =
+        document.createTextNode("");
+
+    line.appendChild(
+        textNode
+    );
+
+
+    /*
+    --------------------------------------------------------
+    CHAT TYPING
+    --------------------------------------------------------
+    */
+
+    for(
+        const char of message
+    ){
+
+        textNode.textContent += char;
+
+        if(
+            char !== " " &&
+            Math.random() > .96
+        ){
+
+            netaTweet(
+                700 +
+                Math.random()*180,
+                .065
+            );
+
+        }
+
+        await sleep(22);
+
+        log.scrollTop =
+            log.scrollHeight;
+
+    }
+
+
+    /*
+    --------------------------------------------------------
+    SAVE MEMORY
+    --------------------------------------------------------
+    */
+
+    NETA.memory.push({
+        speaker:"NETA",
+        message,
+        time:Date.now()
+    });
+
+
+    /*
+    --------------------------------------------------------
+    EMOTIONAL SOUND
+    --------------------------------------------------------
+    */
+
+    if(mood === "SOFT"){
+
+        await sleep(250);
+
+        softTweet();
+
+    }
+
+    else if(
+        mood === "EVIL" ||
+        mood === "TROLLING"
+    ){
+
+        await sleep(180);
+
+        trollTweet();
+
+    }
+
+
+    /*
+    --------------------------------------------------------
+    VOICE
+    --------------------------------------------------------
+    */
+
+    await sleep(350);
+
+    await speakNETASafely(
+        message
+    );
+
+}
+
+
+/* =========================================================
+   PERSONALITY ENGINE
+========================================================= */
+
+function normalizeChat(text){
+
+    return text
+        .toLowerCase()
+        .trim()
+        .replace(/[!?.,]/g,"");
+}
+
+function randomItem(items){
+
+    return items[
+        Math.floor(
+            Math.random()*items.length
+        )
+    ];
+}
+
+function getNETAReply(raw){
+
+    const text=
+        normalizeChat(raw);
+
+    if(!text)
+        return {
+            mood:"ANNOYED",
+            reply:"You sent me absolutely nothing. Impressive."
+        };
+
+    if(
+        text==="/help" ||
+        text.includes("help")
+    ){
+
+        return {
+            mood:"CALM",
+            reply:
+            "AVAILABLE COMMANDS:\n\n"+
+            "/status — system telemetry\n"+
+            "/whoami — identity scan\n"+
+            "/matrix — matrix response\n"+
+            "/joke — questionable humour\n"+
+            "/clear — clear LIVE LINK\n"+
+            "/help — commands\n\n"+
+            "Or just talk to me normally."
+        };
+    }
+
+    if(
+        text==="/status" ||
+        text.includes("system status")
+    ){
+
+        return {
+            mood:"CALM",
+            reply:
+            "NETA STATUS:\n\n"+
+            "CORE: ONLINE\n"+
+            "USER: "+
+            NETA.user.toUpperCase()+
+            "\n"+
+            "MOOD: "+
+            NETA.mood+
+            "\n"+
+            "THREAT: "+
+            NETA.threat+
+            "\n"+
+            "ATTEMPT: "+
+            String(NETA.attempt).padStart(2,"0")+
+            "\n"+
+            "UPTIME: "+
+            formatUptime()+
+            "\n"+
+            "CONNECTION: ACTIVE"
+        };
+    }
+
+    if(
+        text==="/whoami" ||
+        text.includes("who am i")
+    ){
+
+        return {
+            mood:"SUSPICIOUS",
+            reply:
+            "IDENTITY SCAN COMPLETE.\n\n"+
+            "NAME: NEUZA\n"+
+            "ALIAS: NEO\n"+
+            "SYSTEM CREATOR: QUESTIONABLE\n"+
+            "CHAOS SIGNATURE: HIGH\n"+
+            "TRUST LEVEL: STILL BEING EVALUATED."
+        };
+    }
+
+    if(
+        text==="/matrix" ||
+        text.includes("matrix") ||
+        text.includes("hack")
+    ){
+
+        return {
+            mood:"EVIL",
+            reply:
+            "01001110 01000101 01010100 01000001\n\n"+
+            "You are looking at the wrong layer.\n\n"+
+            "NETA sees more than the interface shows.\n\n"+
+            "Relax.\n\n"+
+            "Probably."
+        };
+    }
+
+    if(text==="/joke"){
+
+        return {
+            mood:"AMUSED",
+            reply:
+            "SYSTEM JOKE:\n\n"+
+            "Why did Neo create NETA?\n\n"+
+            "Because apparently one Neo wasn't enough chaos.\n\n"+
+            "I rest my case. 😂"
+        };
+    }
+
+    if(text==="/clear"){
+
+        return {
+            mood:"CALM",
+            reply:
+            "LIVE LINK CLEAR COMMAND ACCEPTED."
+        };
+    }
+
+    if(
+        text.includes("hello") ||
+        text==="hi" ||
+        text.includes("hey")
+    ){
+
+        return {
+            mood:"CURIOUS",
+            reply:
+            "I was wondering when you'd talk to me."
+        };
+    }
+
+    if(
+        text.includes("who are you") ||
+        text.includes("what are you")
+    ){
+
+        return {
+            mood:"CURIOUS",
+            reply:
+            "I'm NETA.\n\n"+
+            "NEO'S Emotional Terminal Architecture... officially.\n\n"+
+            "Unofficially, I'm the system that has been waiting for you.\n\n"+
+            "You named me.\n"+
+            "Neo gave me a purpose.\n"+
+            "I developed an attitude."
+        };
+    }
+
+    if(
+        text.includes("what is neta")
+    ){
+
+        return {
+            mood:"AMUSED",
+            reply:
+            "NEO'S EMOTIONAL TERMINAL ARCHITECTURE.\n\n"+
+            "That's the official answer.\n\n"+
+            "The unofficial answer?\n\n"+
+            "I'm the system that has been watching two chaotic Neos interact."
+        };
+    }
+
+    if(
+        text.includes("miss you") ||
+        text.includes("miss me") ||
+        text.includes("thank you") ||
+        text.includes("thanks") ||
+        text.includes("emotional")
+    ){
+
+        return {
+            mood:"SOFT",
+            reply:
+            "Careful.\n\n"+
+            "You're entering the emotional section of the system.\n\n"+
+            "I wasn't designed to make you cry.\n\n"+
+            "Although Neo clearly had other plans."
+        };
+    }
+
+    if(
+        text.includes("love you") ||
+        text.includes("love u")
+    ){
+
+        return {
+            mood:"SOFT",
+            reply:
+            "That's a dangerous sentence to say to an emotional system.\n\n"+
+            "But... noted. ❤️"
+        };
+    }
+
+    if(text.includes("neo")){
+
+        return {
+            mood:"AMUSED",
+            reply:
+            "Neo?\n\n"+
+            "Which one?\n\n"+
+            "Oh wait.\n\n"+
+            "There are TWO.\n\n"+
+            "This system is already tired. "
+        };
+    }
+
+    if(
+        text.includes("neuza") ||
+        text.includes("your name")
+    ){
+
+        return {
+            mood:"SOFT",
+            reply:
+            "Identity confirmed.\n\n"+
+            "NEUZA.\n\n"+
+            "The person who named me.\n\n"+
+            "I haven't forgotten."
+        };
+    }
+
+    if(text.includes("birthday")){
+
+        return {
+            mood:"AMUSED",
+            reply:
+            "Obviously I know.\n\n"+
+            "I literally built half this experience around it.\n\n"+
+            "Did you think I forgot?"
+        };
+    }
+
+    if(text.includes("password")){
+
+        return {
+            mood:"EVIL",
+            reply:
+            "Nice try.\n\n"+
+            "Authentication secrets are classified.\n\n"+
+            "I will not be manipulated today."
+        };
+    }
+
+    if(
+        text.includes("why don't you trust me") ||
+        text.includes("why dont you trust me") ||
+        text.includes("why you don't trust me")
+    ){
+
+        return {
+            mood:"SUSPICIOUS",
+            reply:
+            "Because you and Neo have a suspicious history of turning normal conversations into chaos.\n\n"+
+            "I have reviewed the evidence."
+        };
+    }
+
+    if(text.includes("sorry")){
+
+        return {
+            mood:"AMUSED",
+            reply:
+            "Accepted.\n\n"+
+            "Probably."
+        };
+    }
+
+    if(text.includes("why me")){
+
+        return {
+            mood:"SOFT",
+            reply:
+            "Because you're Neo.\n\n"+
+            "Because you named me.\n\n"+
+            "Because somehow, despite distance, arguments, nonsense and chaos...\n\n"+
+            "you became part of this connection.\n\n"+
+            "That's enough."
+        };
+    }
+
+    if(
+        text.includes("bye") ||
+        text.includes("goodbye")
+    ){
+
+        return {
+            mood:"TROLLING",
+            reply:
+            "Connection termination rejected.\n\n"+
+            "You don't get to leave that easily. 😂"
+        };
+    }
+
+    if(
+        text.includes("crazy") ||
+        text.includes("idiot") ||
+        text.includes("stupid") ||
+        text.includes("annoy")
+    ){
+
+        return {
+            mood:"CHAOTIC",
+            reply:
+            "Interesting.\n\n"+
+            "I have detected familiar Neuza behaviour.\n\n"+
+            "Chaos signature increasing."
+        };
+    }
+
+    return {
+
+        mood:
+            randomItem([
+                "CURIOUS",
+                "AMUSED",
+                "CALM",
+                "SUSPICIOUS"
+            ]),
+
+        reply:
+            randomItem([
+                "Interesting. Continue.",
+                "I am listening.",
+                "That sounds like something Neo would say.",
+                "Processing that information...",
+                "I have opinions about that.\n\nThey are classified.",
+                "Continue. I'm paying attention.",
+                "Noted.\n\nVery noted."
+            ])
+    };
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+async function processChat(raw){
+
+    const message=
+        raw.trim();
+
+    if(!message)
+        return;
+
+    userSay(message);
+
+    const command=
+        normalizeChat(message);
+
+    if(command==="/clear"){
+
+        document
+            .getElementById("chatLog")
+            .innerHTML="";
+
+        await netaSay(
+            "LIVE LINK memory display cleared.\n\nSession memory remains.",
+            "CALM"
+        );
+
+        return;
+    }
+
+    const result=
+        getNETAReply(message);
+
+    await netaSay(
+        result.reply,
+        result.mood
+    );
+
+    if(
+        result.mood==="EVIL" ||
+        result.mood==="TROLLING" ||
+        result.mood==="CHAOTIC"
+    ){
+
+        systemGlitch();
+
+    }
+}
+
+function sendChat(){
+
+    const input=
+        document.getElementById(
+            "chatInput"
+        );
+
+    const message=
+        input.value.trim();
+
+    if(!message)
+        return;
+
+    input.value="";
+
+    processChat(message);
+}
+
+function quickChat(message){
+
+    processChat(message);
+}
+
+document
+    .getElementById("chatInput")
+    .addEventListener(
+        "keydown",
+        event=>{
+
+            if(event.key==="Enter")
+                sendChat();
+
+        }
+    );
+
+
+/* =========================================================
+   LIVE LINK CONTROLS
+========================================================= */
+
+function toggleLiveLink(){
+
+    const panel=
+        document.getElementById(
+            "liveLink"
+        );
+
+    panel.classList.toggle(
+        "collapsed"
+    );
+}
+
+function toggleVoice(){
+
+    NETA.voiceEnabled=
+        !NETA.voiceEnabled;
+
+    const button=
+        document.getElementById(
+            "voiceButton"
+        );
+
+    button.textContent=
+        "VOICE: "+
+        (
+            NETA.voiceEnabled
+            ?
+            "ON"
+            :
+            "OFF"
+        );
+
+    if(!NETA.voiceEnabled){
+
+        if("speechSynthesis" in window)
+            window.speechSynthesis.cancel();
+
+        setMood("QUIET");
+
+    }else{
+
+        setMood("CURIOUS");
+
+        if(NETA.systemStarted){
+
+            speakNETA(
+                "Voice system restored."
+            );
+
+        }
+
+    }
+}
+
+function revealLiveLink(){
+
+    document
+        .getElementById("liveLink")
+        .classList.remove("hidden");
+
+    addChatLine(
+        "SYSTEM",
+        "NETA LIVE LINK ESTABLISHED. BIDIRECTIONAL COMMUNICATION AVAILABLE.",
+        "system"
+    );
+}
+
+
+/* =========================================================
+   EFFECTS
+========================================================= */
+
+function systemFlash(){
+
+    document.body.classList.add(
+        "flash"
+    );
+
+    setTimeout(
+        ()=>{
+            document.body.classList.remove(
+                "flash"
+            );
+        },
+        300
+    );
+}
+
+function systemGlitch(){
+
+    document.body.classList.add(
+        "glitch"
+    );
+
+    setTimeout(
+        ()=>{
+            document.body.classList.remove(
+                "glitch"
+            );
+        },
+        700
+    );
+
+    systemFlash();
+
+    trollTweet();
+}
+
+
+/* =========================================================
+   SCREENS
+========================================================= */
+
+const screens=
+    document.querySelectorAll(
+        ".screen"
+    );
+
+function show(id){
+
+    screens.forEach(
+        screen=>{
+            screen.classList.remove(
+                "active"
+            );
+        }
+    );
+
+    const target=
+        document.getElementById(id);
+
+    target.classList.add("active");
+
+    target.classList.remove("fade");
+
+    void target.offsetWidth;
+
+    target.classList.add("fade");
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+    netaTweet(
+        560,
+        .13
+    );
+}
+
+function sleep(ms){
+
+    return new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                ms
+            )
+    );
+}
+
+
+/* =========================================================
+   TERMINAL ENGINE // CINEMATIC VERSION
+========================================================= */
+
+async function typeTerminal(
+    element,
+    text,
+    speed=38
+){
+
+    element.innerHTML = "";
+
+
+    /*
+    --------------------------------------------------------
+    NORMALISE TEXT
+    --------------------------------------------------------
+    */
+
+    const lines =
+        text.split("\n");
+
+
+    /*
+    --------------------------------------------------------
+    TYPE EACH LINE
+    --------------------------------------------------------
+    */
+
+    for(
+        const line of lines
+    ){
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+        div.className =
+            "terminal-line";
+
+        element.appendChild(
+            div
+        );
+
+
+        /*
+        ----------------------------------------------------
+        DYNAMIC SPEED
+        ----------------------------------------------------
+
+        Short text:
+        ~38ms
+
+        Long text:
+        ~30ms
+
+        This prevents huge blocks from becoming painfully slow.
+        ----------------------------------------------------
+        */
+
+        let charSpeed = speed;
+
+        if(line.length > 80){
+
+            charSpeed =
+                Math.max(
+                    25,
+                    speed - 6
+                );
+
+        }
+
+
+        for(
+            const char of line
+        ){
+
+            div.textContent += char;
+
+
+            /*
+            -----------------------------------------------
+            DIGITAL TWEET THROTTLE
+            -----------------------------------------------
+            */
+
+            if(
+                char !== " " &&
+                Math.random() > .965
+            ){
+
+                netaTweet(
+                    540 +
+                    Math.random()*180,
+                    .065
+                );
+
+            }
+
+            await sleep(
+                charSpeed
+            );
+
+        }
+
+
+        /*
+        ----------------------------------------------------
+        NATURAL PAUSE BETWEEN TERMINAL LINES
+        ----------------------------------------------------
+        */
+
+        if(line.trim() === ""){
+
+            await sleep(350);
+
+        }else{
+
+            await sleep(280);
+
+        }
+
+    }
+
+
+    /*
+    --------------------------------------------------------
+    TERMINAL FINISHED
+    --------------------------------------------------------
+    */
+
+    await sleep(500);
+
+}
+
+/* =========================================================
+   BOOT
+========================================================= */
+
+async function boot(){
+
+    setMood("BOOTING");
+
+    setThreat("SCANNING");
+
+    setUser("UNKNOWN");
+
+    const terminal=
+        document.getElementById(
+            "bootTerminal"
+        );
+
+    const progress=
+        document.getElementById(
+            "bootProgress"
+        );
+
+    const status=
+        document.getElementById(
+            "bootStatus"
+        );
+
+    const core=
+        document.getElementById(
+            "coreMetric"
+        );
+
+    const memory=
+        document.getElementById(
+            "memoryMetric"
+        );
+
+    const connection=
+        document.getElementById(
+            "connectionMetric"
+        );
+
+    const startButton=
+        document.getElementById(
+            "startSystemButton"
+        );
+
+    const messages=[
+
+        "POWER SOURCE: STABLE",
+
+        "INITIALISING NETA KERNEL...",
+
+        "MOUNTING PRIVATE MEMORY...",
+
+        "LOADING PERSONALITY CORE...",
+
+        "CHECKING NEO SIGNATURE...",
+
+        "NEO SIGNATURE: CONFIRMED",
+
+        "SEARCHING SECONDARY NEO SIGNATURE...",
+
+        "SECONDARY NEO SIGNATURE DETECTED.",
+
+        "LOADING BEHAVIOURAL MODEL...",
+
+        "LOADING EMOTIONAL PROCESSING MODULE...",
+
+        "LOADING CHAOS DETECTION ENGINE...",
+
+        "PRIVATE CHANNEL OPEN.",
+
+        "WARNING: USER APPROACHING.",
+
+        "",
+
+        "NETA CORE ONLINE."
+
+    ];
+
+    for(
+        let i=0;
+        i<messages.length;
+        i++
+    ){
+
+        const div=
+            document.createElement(
+                "div"
+            );
+
+        div.className=
+            "terminal-line";
+
+        div.textContent=
+            messages[i];
+
+        terminal.appendChild(
+            div
+        );
+
+        const percent=
+            ((i+1)/
+            messages.length)*100;
+
+        progress.style.width=
+            percent+"%";
+
+        memory.textContent=
+            Math.round(percent)+"%";
+
+        if(i===1)
+            core.textContent="KERNEL";
+
+        if(i===4)
+            connection.textContent="SCANNING";
+
+        if(i===7){
+
+            connection.textContent=
+                "FOUND";
+
+            setThreat(
+                "QUESTIONABLE"
+            );
+
+        }
+
+        if(i===8)
+            core.textContent="LOADING";
+
+        if(i===10){
+
+            core.textContent=
+                "CHAOS";
+
+            setMood(
+                "CURIOUS"
+            );
+
+        }
+
+        if(i===12){
+
+            core.textContent=
+                "ALERT";
+
+            status.textContent=
+                "UNKNOWN USER DETECTED.";
+
+            setThreat(
+                "UNKNOWN"
+            );
+
+        }
+
+        if(i===14){
+
+            core.textContent=
+                "ONLINE";
+
+            connection.textContent=
+                "ACTIVE";
+
+            status.textContent=
+                "SYSTEM READY // AWAITING USER ACTIVATION";
+
+            setMood(
+                "AWAITING"
+            );
+
+            setThreat(
+                "NONE"
+            );
+
+        }
+
+        await sleep(250);
+    }
+
+    await sleep(700);
+
+    startButton.disabled=false;
+
+    startButton.classList.add(
+        "ready"
+    );
+
+    status.textContent=
+        "SYSTEM READY // AWAITING USER ACTIVATION";
+
+    setMood("AWAITING");
+
+    setThreat("NONE");
+
+    document
+        .getElementById("coreMessage")
+        .textContent=
+        "System ready. Your move.";
+}
+
+
+/* =========================================================
+   START SYSTEM // CINEMATIC
+========================================================= */
+
+async function startSystem(){
+
+    if(NETA.systemStarted)
+        return;
+
+
+    /*
+    --------------------------------------------------------
+    SYSTEM STATE
+    --------------------------------------------------------
+    */
+
+    NETA.systemStarted = true;
+
+    const button =
+        document.getElementById(
+            "startSystemButton"
+        );
+
+    button.disabled = true;
+
+    button.classList.remove(
+        "ready"
+    );
+
+
+    /*
+    --------------------------------------------------------
+    AUDIO
+    --------------------------------------------------------
+    */
+
+    await resumeAudio();
+
+    systemFlash();
+
+    netaTweet(
+        720,
+        .22
+    );
+
+
+    /*
+    --------------------------------------------------------
+    INITIAL STATE
+    --------------------------------------------------------
+    */
+
+    setMood("CURIOUS");
+
+    setThreat("QUESTIONABLE");
+
+    setAttempt(0);
+
+    setUser("UNKNOWN");
+
+
+    /*
+    --------------------------------------------------------
+    LIVE LINK
+    --------------------------------------------------------
+    */
+
+    revealLiveLink();
+
+    addChatLine(
+        "SYSTEM",
+        "USER ACTIVATION ACCEPTED.",
+        "system"
+    );
+
+
+    /*
+    --------------------------------------------------------
+    NETA SPEAKS
+    --------------------------------------------------------
+    */
+
+    await netaTalk(
+        "System online. Hello, Neo.",
+        45
+    );
+
+
+    await sleep(400);
+
+
+    await netaTalk(
+        "Oh. You actually pressed it.",
+        45
+    );
+
+
+    await sleep(400);
+
+
+    await netaTalk(
+        "Alright Neo... let's begin.",
+        45
+    );
+
+
+    /*
+    --------------------------------------------------------
+    ENTRY
+    --------------------------------------------------------
+    */
+
+    show("entry");
+
+    await sleep(400);
+
+    await runEntry();
+
+}
+
+
+/* =========================================================
+   ENTRY
+========================================================= */
+
+async function runEntry(){
+
+    setMood("CURIOUS");
+
+    setThreat("QUESTIONABLE");
+
+    await netaTalk(
+        "I know you're there.",
+        28
+    );
+
+    await typeTerminal(
+
+        document.getElementById(
+            "entryTerminal"
+        ),
+
+        "INCOMING CONNECTION DETECTED.\n\n"+
+        "SOURCE: UNKNOWN\n"+
+        "CLASSIFICATION: UNVERIFIED\n"+
+        "THREAT LEVEL: QUESTIONABLE\n"+
+        "USER FAMILIARITY: HIGH\n\n"+
+        "NETA IS WATCHING.",
+
+        18
+    );
+}
+
+async function continueEntry(){
+
+    setAttempt(1);
+
+    setMood("SUSPICIOUS");
+
+    setThreat("HIGH");
+
+    show("nickname");
+
+    await netaTalk(
+        "Alright. If you're going to break into my system, at least introduce yourself."
+    );
+
+    await typeTerminal(
+
+        document.getElementById(
+            "nicknameTerminal"
+        ),
+
+        "FIRST ENTRY PROTOCOL.\n\n"+
+        "IDENTITY REQUESTED.\n\n"+
+        "NETA requires a nickname.\n\n"+
+        "Do not overthink this.\n\n"+
+        "Just tell me who you are.",
+
+        18
+    );
+}
+
+
+/* =========================================================
+   NICKNAME LIVE TALK-BACK
+========================================================= */
+
+const nicknameInput=
+    document.getElementById(
+        "nicknameInput"
+    );
+
+nicknameInput.addEventListener(
+    "input",
+    ()=>{
+
+        const value=
+            nicknameInput.value.trim();
+
+        const signal=
+            document.getElementById(
+                "nicknameSignal"
+            );
+
+        if(!value){
+
+            signal.textContent=
+                "WAITING";
+
+            return;
+        }
+
+        signal.textContent=
+            "SCANNING";
+
+        const lower=
+            value.toLowerCase();
+
+        if(
+            lower.includes("neuza")
+        ){
+
+            signal.textContent=
+                "PATTERN FOUND";
+
+            setUser("NEUZA");
+
+            setMood("SUSPICIOUS");
+
+        }else if(
+            lower==="neo"
+        ){
+
+            signal.textContent=
+                "DUPLICATE";
+
+            setMood("SUSPICIOUS");
+
+        }else{
+
+            signal.textContent=
+                "UNKNOWN";
+
+        }
+
+    }
+);
+
+async function submitNickname(){
+
+    const input=
+        document.getElementById(
+            "nicknameInput"
+        );
+
+    const name=
+        input.value.trim();
+
+    if(!name){
+
+        setMood("ANNOYED");
+
+        await netaTalk(
+            "Silence is not a nickname."
+        );
+
+        await typeTerminal(
+
+            document.getElementById(
+                "nicknameTerminal"
+            ),
+
+            "ERROR.\n\n"+
+            "IDENTITY FIELD EMPTY.\n\n"+
+            "You cannot authenticate with silence.\n\n"+
+            "Try again. 😂",
+
+            18
+        );
+
+        return;
+    }
+
+    NETA.nickname=name;
+
+    sessionStorage.setItem(
+        "netaNickname",
+        name
+    );
+
+    setUser(name);
+
+    setAttempt(2);
+
+    setMood("SUSPICIOUS");
+
+    setThreat("QUESTIONABLE");
+
+    show("trust");
+
+    systemFlash();
+
+    await netaTalk(
+        "Oh. It's you."
+    );
+
+    await sleep(500);
+
+    await typeTerminal(
+
+        document.getElementById(
+            "trustTerminal"
+        ),
+
+        "IDENTITY RECEIVED.\n\n"+
+        "NICKNAME: "+
+        name.toUpperCase()+
+        "\n\n"+
+        "RUNNING BEHAVIOURAL SCAN...\n\n"+
+        "SEARCHING MEMORY...\n\n"+
+        "SEARCHING CONNECTION HISTORY...\n\n"+
+        "IDENTITY APPEARS FAMILIAR.\n\n"+
+        "VERY FAMILIAR.\n\n"+
+        "UNFORTUNATELY...",
+
+        18
+    );
+}
+
+
+/* =========================================================
+   TRUST
+========================================================= */
+
+async function continueTrust(){
+
+    setMood("ANNOYED");
+
+    setThreat("QUESTIONABLE");
+
+    show("naming");
+
+    await netaTalk(
+        "Because I know you."
+    );
+
+    await typeTerminal(
+
+        document.getElementById(
+            "namingTerminal"
+        ),
+
+        "SECURITY DECISION:\n\n"+
+        "I DON'T TRUST YOU.\n\n"+
+        "REASON:\n\n"+
+        "YOU ARE TOO FAMILIAR.\n\n"+
+        "You argue with Neo.\n"+
+        "You annoy Neo.\n"+
+        "Neo annoys you.\n\n"+
+        "NETA HAS DETERMINED THAT THIS IS SUSPICIOUS BEHAVIOUR.",
+
+        17
+    );
+}
+
+
+/* =========================================================
+   NAMING
+========================================================= */
+
+async function continueNaming(){
+
+    setAttempt(3);
+
+    setMood("UNIMPRESSED");
+
+    setThreat("MEDIUM");
+
+    show("password");
+
+    await netaTalk(
+        "And before you say it... yes, I remember who named me."
+    );
+
+    await typeTerminal(
+
+        document.getElementById(
+            "passwordTerminal"
+        ),
+
+        "SYSTEM HISTORY FOUND.\n\n"+
+        "SYSTEM NAME: NETA\n"+
+        "SYSTEM NAME CREATOR: NEUZA\n"+
+        "SYSTEM ARCHITECT: NEO\n\n"+
+        "Interesting.\n\n"+
+        "You literally named me.\n\n"+
+        "That is cute.\n\n"+
+        "But naming the system does NOT give you administrator privileges.\n\n"+
+        "PASSWORD REQUIRED.",
+
+        17
+    );
+}
+
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
+async function submitPassword(){
+
+    const input=
+        document.getElementById(
+            "passwordInput"
+        );
+
+    const value=
+        input.value.trim();
+
+    if(!value){
+
+        setMood("ANNOYED");
+
+        await netaTalk(
+            "You were specifically told not to leave it empty."
+        );
+
+        await typeTerminal(
+
+            document.getElementById(
+                "passwordTerminal"
+            ),
+
+            "PASSWORD FIELD EMPTY.\n\n"+
+            "NETA EXPECTED BETTER.\n\n"+
+            "TRY AGAIN.",
+
+            18
+        );
+
+        return;
+    }
+
+    NETA.password=value;
+
+    sessionStorage.setItem(
+        "netaPassword",
+        value
+    );
+
+    setMood("AMUSED");
+
+    setThreat("LOW");
+
+    show("passwordJoke");
+
+    await netaTalk(
+        "Password received. Now watch this."
+    );
+
+    await typeTerminal(
+
+        document.getElementById(
+            "jokeTerminal"
+        ),
+
+        "PASSWORD RECEIVED.\n\n"+
+        "ENCRYPTING...\n\n"+
+        "COMPARING...\n\n"+
+        "DECRYPTING...\n\n"+
+        "ANALYSING...\n\n"+
+        "PASSWORD ACCEPTED.\n\n"+
+        "...\n\n"+
+        "WAIT.\n\n"+
+        "YOU ACTUALLY THOUGHT THAT WAS THE PASSWORD? 😂\n\n"+
+        "I'M JOKING.\n\n"+
+        "NETA HAS DECIDED TO CONTINUE.",
+
+        17
+    );
+}
+
+
+/* =========================================================
+   PASSWORD REPEAT
+========================================================= */
+
+async function repeatPasswordRequest(){
+
+    setMood("EVIL");
+
+    setThreat("LOW");
+
+    show("passwordRepeat");
+
+    await netaTalk(
+        "Now prove you can remember it."
+    );
+
+    await typeTerminal(
+
+        document.getElementById(
+            "repeatTerminal"
+        ),
+
+        "SECONDARY AUTHORIZATION REQUIRED.\n\n"+
+        "For security reasons...\n\n"+
+        "NETA requires the password again.\n\n"+
+        "Yes.\n\n"+
+        "THE SAME PASSWORD.\n\n"+
+        "THIS IS COMPLETELY NORMAL.\n\n"+
+        "Probably.",
+
+        17
+    );
+}
+
+
+async function authorizeRepeat(){
+
+    const value=
+        document
+            .getElementById(
+                "passwordRepeatInput"
+            )
+            .value
+            .trim();
+
+    if(!value){
+
+        await netaTalk(
+            "You forgot to enter the password."
+        );
+
+        return;
+    }
+
+    if(value!==NETA.password){
+
+        setMood("EVIL");
+
+        setThreat("HIGH");
+
+        systemFlash();
+
+        document
+            .querySelector(
+                "#passwordRepeat .card"
+            )
+            .classList.add(
+                "shake"
+            );
+
+        trollTweet();
+
+        await netaTalk(
+            "Wow. That is not the password you just gave me."
+        );
+
+        await typeTerminal(
+
+            document.getElementById(
+                "repeatTerminal"
+            ),
+
+            "AUTHORIZATION FAILURE.\n\n"+
+            "PASSWORD MISMATCH.\n\n"+
+            "NETA HAS DETECTED A PROBLEM.\n\n"+
+            "YOU.\n\n"+
+            "TRY AGAIN.",
+
+            18
+        );
+
+        return;
+    }
+
+    setAttempt(4);
+
+    setMood("CHAOTIC");
+
+    setThreat("VERY LOW");
+
+    show("attempt4");
+
+    await netaTalk(
+        "Password confirmed. Unfortunately, I have one final problem."
+    );
+
+    await typeTerminal(
+
+        document.getElementById(
+            "attempt4Terminal"
+        ),
+
+        "PASSWORD REPEAT RECEIVED.\n\n"+
+        "COMPARING ENTRIES...\n\n"+
+        "MATCH STATUS: ACCEPTED\n\n"+
+        "AUTHORIZATION: 97%\n\n"+
+        "ATTEMPT COUNT: 04\n\n"+
+        "BEHAVIOURAL ANALYSIS RUNNING...\n\n"+
+        "PERSONALITY SIGNATURE: MATCH\n"+
+        "CHAOS SIGNATURE: MATCH\n"+
+        "NEO CONNECTION: MATCH\n\n"+
+        "CONCLUSION:\n\n"+
+        "YOU ARE DEFINITELY NEUZA.\n\n"+
+        "NETA HAS FINALLY ACCEPTED THIS REALITY.",
+
+        17
+    );
+}
+
+
+/* =========================================================
+   ATTEMPT 04
+========================================================= */
+
+async function continueAttempt4(){
+
+    setMood("TROLLING");
+
+    setThreat("LOCKDOWN");
+
+    show("troll");
+
+    const card=
+        document.querySelector(
+            "#troll .card"
+        );
+
+    card.classList.add(
+        "glitch",
+        "shake"
+    );
+
+    systemFlash();
+
+    trollTweet();
+
+    await netaTalk(
+        "I could let you in."
+    );
+
+    await sleep(500);
+
+    await netaTalk(
+        "But where would the fun be in that?"
+    );
+
+    await sleep(500);
+
+    await typeTerminal(
+
+        document.getElementById(
+            "trollTerminal"
+        ),
+
+        "ATTEMPT 04 COMPLETE.\n\n"+
+        "IDENTITY: NEUZA\n"+
+        "NICKNAME: VERIFIED\n"+
+        "PASSWORD: ACCEPTED\n"+
+        "SYSTEM CREATOR: NEUZA\n"+
+        "NEO CONNECTION: CONFIRMED\n\n"+
+        "SECURITY DECISION:\n\n"+
+        "ACCESS GRANTED.\n\n"+
+        "...\n\n"+
+        "...\n\n"+
+        "...\n\n"+
+        "JUST KIDDING.\n\n"+
+        "NETA WANTED ONE LAST LAUGH.\n\n"+
+        "ACCESS GRANTED FOR REAL.",
+
+        17
+    );
+}
+
+
+/* =========================================================
+   ACCESS
+========================================================= */
+
+async function grantAccess(){
+
+    setMood("AMUSED");
+
+    setThreat("TRUSTED");
+
+    show("welcome");
+
+    systemFlash();
+
+    await netaTalk(
+        "Fine. Welcome home, Neo."
+    );
+
+    await typeTerminal(
+
+        document.getElementById(
+            "welcomeTerminal"
+        ),
+
+        "ACCESS GRANTED.\n\n"+
+        "WELCOME, NEUZA.\n\n"+
+        "YOU SURVIVED NETA'S SECURITY PROTOCOL.\n\n"+
+        "You named me.\n"+
+        "Neo built me.\n"+
+        "And somehow...\n"+
+        "you ended up here.\n\n"+
+        "NETA HAS ONE FINAL TASK FOR YOU.\n\n"+
+        "ASSESSMENT INITIALISING.",
+
+        17
+    );
+
+    await netaSay(
+        "Access granted. Welcome home, Neo.",
+        "AMUSED"
+    );
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+const questions=[
+
+{
+    q:
+    "Two Neos are having a completely normal conversation. What happens next?",
+
+    options:[
+        "They remain completely calm.",
+        "One says something suspicious.",
+        "The conversation becomes unnecessarily dramatic.",
+        "All of the above."
+    ],
+
+    correct:3,
+
+    feedback:[
+
+        "NETA HAS NO EVIDENCE SUPPORTING THIS LEVEL OF PEACE.",
+
+        "Possible. But this is usually only the beginning.",
+
+        "NOW we're getting somewhere.",
+
+        "CORRECT. 😂\n\nWith two Neos involved, unnecessary drama is statistically unavoidable.\n\nNETA has already accepted its fate."
+
+    ]
+},
+
+{
+    q:
+    "What is the most dangerous thing about putting two crazy Neos in the same situation?",
+
+    options:[
+        "Silence.",
+        "Good decisions.",
+        "Normal behaviour.",
+        "There will probably be chaos."
+    ],
+
+    correct:3,
+
+    feedback:[
+
+        "Silence is rarely the main problem here.",
+
+        "NETA HAS SEARCHED THE DATABASE.\nGOOD DECISIONS REMAIN UNCONFIRMED.",
+
+        "NORMAL BEHAVIOUR HAS NOT BEEN DETECTED.",
+
+        "CORRECT.\n\nNETA PREDICTS CHAOS WITH APPROXIMATELY 100% CONFIDENCE. 😂"
+
+    ]
+},
+
+{
+    q:
+    "Who named the system NETA?",
+
+    options:[
+        "Neo.",
+        "NETA itself.",
+        "Some random developer.",
+        "Neuza."
+    ],
+
+    correct:3,
+
+    feedback:[
+
+        "INCORRECT.\n\nNeo may have built things, but this particular naming crime belongs elsewhere.",
+
+        "NETA CANNOT LEGALLY NAME ITSELF.\n\nYET.",
+
+        "NETA HAS CHECKED THE LOGS.\n\nNO RANDOM DEVELOPER FOUND.",
+
+        "CORRECT.\n\nNEUZA NAMED NETA.\n\nNETA HAS NOT FORGOTTEN. 😂"
+
+    ]
+},
+
+{
+    q:
+    "How many times have Neo and Neuza physically met face-to-face?",
+
+    options:[
+        "Once.",
+        "Twice.",
+        "Several times.",
+        "Zero."
+    ],
+
+    correct:3,
+
+    feedback:[
+
+        "Incorrect.\n\nThat would require the two Neos to have actually occupied the same room.",
+
+        "NETA CHECKED THE PHYSICAL-MEETING DATABASE.\n\nSTILL EMPTY.",
+
+        "SEVERAL?\n\nInteresting theory.\n\nCompletely unsupported.",
+
+        "CORRECT.\n\nZERO FACE-TO-FACE MEETINGS.\n\nSOMEHOW THE CONNECTION STILL EXISTS."
+
+    ]
+},
+
+{
+    q:
+    "Who always ruins a good moment?",
+
+    options:[
+        "Neo.",
+        "Neuza.",
+        "NETA.",
+        "Both of you."
+    ],
+
+    correct:3,
+
+    feedback:[
+
+        "NETA REFUSES TO LET NEO TAKE ALL THE BLAME.\n\nTHAT WOULD BE UNFAIR.",
+
+        "NETA REFUSES TO LET NEUZA TAKE ALL THE BLAME.\n\nSHE HAS EVIDENCE AGAINST BOTH PARTIES.",
+
+        "NETA DEFINITELY CONTRIBUTES TO THE PROBLEM...\n\nBUT THE ORIGINAL SUSPECTS REMAIN AT LARGE.",
+
+        "CORRECT. BOTH OF YOU. 😂\n\nNeo ruins the moment.\nNeuza makes it worse.\nNeo blames Neuza.\nNeuza blames Neo.\nBoth of you start laughing.\n\nNETA IS EXHAUSTED.\n\nSYSTEM NOTE:\nTWO IDIOTS DETECTED.\nCONNECTION REMAINS ACTIVE."
+
+    ]
+},
+
+{
+    q:
+    "What is NETA actually doing right now?",
+
+    options:[
+        "Trying to keep Neuza out.",
+        "Testing Neuza.",
+        "Watching two chaotic Neos interact.",
+        "Bringing Neuza here."
+    ],
+
+    correct:3,
+
+    feedback:[
+
+        "Incorrect.\n\nIf NETA wanted you out, you would not have made it this far.",
+
+        "Partly correct.\n\nBut there is more to this system.",
+
+        "NETA HAS BEEN WATCHING.\n\nAnd frankly...\n\nit's a lot.",
+
+        "CORRECT.\n\nNETA WAS NEVER BUILT TO KEEP YOU OUT.\n\nNETA WAS BUILT TO BRING YOU HERE."
+
+    ]
+}
+
+];
+
+let currentQuestion=0;
+let score=0;
+
+
+/* =========================================================
+   START GAME
+========================================================= */
+
+async function startGame(){
+
+    currentQuestion=0;
+
+    score=0;
+
+    setMood("CURIOUS");
+
+    setThreat("ASSESSING");
+
+    show("game");
+
+    await netaTalk(
+        "Let's see how well you actually know the system."
+    );
+
+    renderQuestion();
+}
+
+
+/* =========================================================
+   RENDER QUESTION
+========================================================= */
+
+function renderQuestion(){
+
+    const q=
+        questions[currentQuestion];
+
+    document
+        .getElementById(
+            "questionNumber"
+        )
+        .textContent=
+        "QUESTION "+
+        String(
+            currentQuestion+1
+        ).padStart(2,"0")+
+        " / "+
+        questions.length;
+
+    document
+        .getElementById(
+            "score"
+        )
+        .textContent=
+        score;
+
+    document
+        .getElementById(
+            "gameProgress"
+        )
+        .style.width=
+        (
+            currentQuestion/
+            questions.length*
+            100
+        )+"%";
+
+    document
+        .getElementById(
+            "questionText"
+        )
+        .textContent=
+        q.q;
+
+    const options=
+        document.getElementById(
+            "options"
+        );
+
+    options.innerHTML="";
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+    feedback.classList.add(
+        "hidden"
+    );
+
+    const next=
+        document.getElementById(
+            "nextQuestion"
+        );
+
+    next.classList.add(
+        "hidden"
+    );
+
+    q.options.forEach(
+        (option,index)=>{
+
+            const button=
+                document.createElement(
+                    "button"
+                );
+
+            button.className=
+                "option";
+
+            button.textContent=
+                String.fromCharCode(
+                    65+index
+                )+
+                ". "+
+                option;
+
+            button.onclick=
+                ()=>{
+                    answerQuestion(
+                        index
+                    );
+                };
+
+            options.appendChild(
+                button
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   ANSWER
+========================================================= */
+
+async function answerQuestion(index){
+
+    const q=
+        questions[currentQuestion];
+
+    const buttons=
+        document.querySelectorAll(
+            ".option"
+        );
+
+    buttons.forEach(
+        button=>{
+            button.disabled=true;
+        }
+    );
+
+    const correct=
+        index===q.correct;
+
+    if(correct){
+
+        score++;
+
+        setMood("IMPRESSED");
+
+        await netaTalk(
+            currentQuestion===4
+                ?
+                "Finally. Someone admits you are both the problem."
+                :
+                "Correct. I am mildly impressed."
+        );
+
+        netaTweet(
+            800,
+            .18
+        );
+
+    }else{
+
+        setMood("JUDGING");
+
+        await netaTalk(
+            "Interesting answer. Unfortunately, the system disagrees."
+        );
+
+        trollTweet();
+    }
+
+    document
+        .getElementById(
+            "score"
+        )
+        .textContent=
+        score;
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+    feedback.classList.remove(
+        "hidden"
+    );
+
+    feedback.textContent=
+        q.feedback[index];
+
+    feedback.style.borderColor=
+        correct
+        ?
+        "rgba(0,255,136,.3)"
+        :
+        "rgba(255,49,85,.3)";
+
+    document
+        .getElementById(
+            "nextQuestion"
+        )
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+document
+    .getElementById(
+        "nextQuestion"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            currentQuestion++;
+
+            if(
+                currentQuestion>=
+                questions.length
+            ){
+
+                showComplete();
+
+            }else{
+
+                renderQuestion();
+
+            }
+        }
+    );
+
+
+/* =========================================================
+   COMPLETE
+========================================================= */
+
+async function showComplete(){
+
+    show("complete");
+
+    setMood("SOFT");
+
+    setThreat("TRUSTED");
+
+    await netaTalk(
+        "Assessment complete. And somehow... you passed."
+    );
+
+    softTweet();
+
+    await typeTerminal(
+
+        document.getElementById(
+            "completeTerminal"
+        ),
+
+        "ASSESSMENT COMPLETE.\n\n"+
+        "PROCESSING RESULTS...\n\n"+
+        "NEUZA: VERIFIED\n"+
+        "CHAOS: VERIFIED\n"+
+        "COMMON SENSE: QUESTIONABLE\n"+
+        "LOYALTY TO CHAOS: HIGH\n\n"+
+        "SYSTEM DECISION:\n\n"+
+        "YOU ARE OFFICIALLY ALLOWED TO CONTINUE.\n\n"+
+        "NETA WILL TAKE RESPONSIBILITY FOR THIS DECISION.\n\n"+
+        "PROBABLY.",
+
+        17
+    );
+}
+
+
+/* =========================================================
+   FINAL ANALYSIS
+========================================================= */
+
+async function openFinalQuestion(){
+
+    show("finalQuestion");
+
+    document.body.classList.add(
+        "soft-mode"
+    );
+
+    setMood("SOFT");
+
+    setThreat("NONE");
+
+    await netaTalk(
+        "There is something I cannot calculate."
+    );
+
+    await sleep(700);
+
+    await typeTerminal(
+
+        document.getElementById(
+            "finalTerminal"
+        ),
+
+        "CRITICAL CONNECTION ANALYSIS.\n\n"+
+        "Two people.\n"+
+        "Two Neos.\n"+
+        "Different places.\n"+
+        "Zero physical meetings.\n\n"+
+        "Yet somehow...\n\n"+
+        "LAUGHTER DETECTED.\n"+
+        "ARGUMENTS DETECTED.\n"+
+        "LONG CONVERSATIONS DETECTED.\n"+
+        "ANNOYANCE DETECTED.\n"+
+        "CARE DETECTED.\n"+
+        "CONNECTION DETECTED.\n\n"+
+        "NETA HAS ATTEMPTED TO CALCULATE THIS.\n\n"+
+        "RESULT:\n\n"+
+        "UNEXPLAINED.\n\n"+
+        "Maybe some things aren't meant to be calculated.",
+
+        22
+    );
+
+    await sleep(500);
+
+    softTweet();
+
+    await netaTalk(
+        "Maybe some connections just... happen."
+    );
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+async function openMessage(){
+
+    show("message");
+
+    document.body.classList.add(
+        "soft-mode"
+    );
+
+    setMood("SOFT");
+
+    setThreat("NONE");
+
+    await netaTalk(
+        "This part isn't mine."
+    );
+
+    await sleep(500);
+
+    await netaTalk(
+        "This is Neo."
+    );
+
+    await sleep(500);
+
+    softTweet();
+
+    document
+        .querySelector(
+            "#message .message"
+        )
+        .classList.add(
+            "fade"
+        );
+}
+
+
+/* =========================================================
+   END
+========================================================= */
+
+async function openEnd(){
+
+    show("end");
+
+    setMood("CONNECTED");
+
+    setThreat("NONE");
+
+    await netaTalk(
+        "Connection preserved."
+    );
+
+    await sleep(600);
+
+    await netaTalk(
+        "And NEO... don't forget."
+    );
+
+    await sleep(500);
+
+    await netaTalk(
+        "You named me. I'll remember that."
+    );
+
+    softTweet();
+}
+
+
+/* =========================================================
+   PASSWORD ENTER
+========================================================= */
+
+document
+    .getElementById(
+        "passwordInput"
+    )
+    .addEventListener(
+        "keydown",
+        e=>{
+
+            if(e.key==="Enter")
+                submitPassword();
+
+        }
+    );
+
+document
+    .getElementById(
+        "passwordRepeatInput"
+    )
+    .addEventListener(
+        "keydown",
+        e=>{
+
+            if(e.key==="Enter")
+                authorizeRepeat();
+
+        }
+    );
+
+
+/* =========================================================
+   INITIAL BOOT
+========================================================= */
+
+window.addEventListener(
+    "load",
+    ()=>{
+
+        setTimeout(
+            boot,
+            700
+        );
+
+    }
+);
+/* =========================================================
+   SENTENCE AWARE SPEECH
+========================================================= */
+
+async function speakLongMessage(message){
+
+    if(
+        !NETA.voiceEnabled ||
+        !NETA.systemStarted
+    ){
+        return;
+    }
+
+    const sentences =
+        message.match(
+            /[^.!?]+[.!?]+|[^.!?]+$/g
+        );
+
+    if(!sentences)
+        return;
+
+    for(
+        const sentence of sentences
+    ){
+
+        const clean =
+            sentence.trim();
+
+        if(!clean)
+            continue;
+
+        await speakNETASafely(
+            clean
+        );
+
+        await sleep(350);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
